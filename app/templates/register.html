@@ -5,25 +5,8 @@
 		<div class="flex items-center justify-center">
 			{% from "helpers/_form.html" import render_field %}
 			<form class="w-2/4" action="/join" method="post">
-				<div class="mb-3">
-					<!-- <input class="input-text" autocomplete="off" autofocus name="username" placeholder="Username" type="text" /> -->
-					{{ render_field(form.username) }}
-				</div>
-				<div class="mb-3">
-					<!-- <input class="input-text" autocomplete="off" autofocus name="username" placeholder="Username" type="text" /> -->
-					{{ render_field(form.email) }}
-				</div>
-				<div class="mb-3">
-					<!-- <input class="input-text" name="password" placeholder="Password" type="password" /> -->
-					{{ render_field(form.password) }}
-				</div>
-				<div class="mb-3">
-					{{ render_field(form.confirmation) }}
-					<!-- <input class="input-text" name="confirmation" placeholder="Password (Again)" type="password" /> -->
-				</div>
-				<div class="mb-3 font-semibold flex items-center justify-center">
-					<button class="btn" type="submit">Register</button>
-				</div>
+				{{ render_field(form.username) }} {{ render_field(form.email) }} {{ render_field(form.password) }} {{ render_field(form.confirmation) }}
+				<button class="btn" type="submit">Register</button>
 			</form>
 		</div>
 	</div>

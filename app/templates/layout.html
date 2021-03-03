@@ -43,7 +43,7 @@
 				</button>
 			</div>
 
-			<div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block pt-6 lg:pt-0" id="nav-content">
+			<div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden pt-6 lg:pt-0" id="nav-content">
 				<ul class="list-reset lg:flex justify-end flex-1 items-center">
 					<li class="mr-3">
 						<a class="inline-block py-2 px-4 text-white no-underline" href="/">Dashboard</a>
@@ -60,9 +60,9 @@
 				</ul>
 			</div>
 		</nav>
-		<div class="container mx-auto">
+		<div id="main" class="container mx-auto">
 			<!-- Add your site or application content here -->
-			{% block main %}{% endblock %} {% block script %}{% endblock %}
+			{% block main %}{% endblock %}
 		</div>
 		<script>
 			//Javascript to toggle the menu
@@ -70,5 +70,6 @@
 				document.getElementById("nav-content").classList.toggle("hidden");
 			};
 		</script>
+		{%block script %}{% endblock %}
 	</body>
 </html>

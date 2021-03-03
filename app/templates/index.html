@@ -4,6 +4,9 @@
 	<div class="text-white p-5 grid grid-cols-1 md:grid-cols-3">
 		<div class="col-start-1 col-span-2">
 			<h2 class="text-xl">Recently Added</h2>
+			{% if not words %}
+			<p class="text-yellow-200 mt-2">Oops, you have not any vocabulary to review. Please <a href="/word/add">add one</a> to start.</p>
+			{% endif %}
 		</div>
 		<div class="col">
 			<h2 class="text-xl">Sidebar</h2>

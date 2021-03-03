@@ -1,0 +1,78 @@
+{% extends "layout.html" %} {% block title %} Add New Word {% endblock %} {% block main %}
+<div class="page-header"><h1>Add new word</h1></div>
+<div class="flex flex-auto">
+	<div class="flex-1">
+		<div class="flex items-center justify-center">
+			{% from "helpers/_form.html" import render_field %}
+			<div class="w-2/4">
+				<form id="the-form" action="/word/add" method="post">{{ render_field(form.word) }}</form>
+
+				<button id="submit" class="btn" type="submit">Submit</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal opacity-0 pointer-events-none absolute w-full h-full top-0 left-0 flex items-center justify-center">
+	<div class="modal-overlay absolute w-full h-full bg-black opacity-75 top-0 left-0 cursor-pointer"></div>
+	<div id="preview" class="p-6 mt-16 absolute w-1/2 max-h-full bg-white rounded-sm shadow-lg overflow-y-scroll">
+		<div class="flex items-center justify-between flex-wrap pt-2">
+			<div class="flex-grow lg:flex lg:items-center lg:justify-center lg:w-auto">
+				<button id="confirm" class="btn mr-4">Confirm</button>
+				<button id="cancel" class="btn">Cancel</button>
+			</div>
+		</div>
+		<div id="modal-content"></div>
+	</div>
+</div>
+
+{% endblock %} {% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#submit").click((e) => {
+			// e.preventDefault();
+			preview();
+		});
+
+		$("#confirm").click(() => {
+			$("#the-form").submit();
+		});
+
+		$("#cancel").click((e) => {
+			toggleModal();
+		});
+
+		$(".modal-overlay").click(toggleModal);
+	});
+
+	let preview = () => {
+		let word = $("input").val();
+		$.get(`/api/lookup/${word}`, (data) => {
+			$("#modal-content").empty();
+			let r_count = 1;
+			for (let r of data) {
+				$("#modal-content").append(`<h2 class="text-lg mt-2 font-semibold text-blue-800">${r_count}.</h2>`);
+				for (let e of r.result) {
+					$("#preview").append(`<h3 class="text-lg text-green-900 italic font-mono font-semibold">(${e.lexical})</h3>`);
+					for (let d of e.entry) {
+						$("#modal-content").append(`<p></p>`);
+						$("#modal-content").append(`<p class="font-semibold">${d.definition}</p>`);
+						$("#prevmodal-contentiew").append(`<p></p>`);
+						for (let x of d.examples) {
+							$("#modal-content").append(`<p class="italic">- ${x.text} </p>`);
+						}
+					}
+					$("#modal-content").append(`<p class="my-2"></p>`);
+				}
+				r_count++;
+			}
+			toggleModal();
+		});
+	};
+	let toggleModal = () => {
+		const modal = document.querySelector(".modal");
+		modal.classList.toggle("opacity-0");
+		modal.classList.toggle("pointer-events-none");
+	};
+</script>
+{% endblock%}

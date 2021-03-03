@@ -5,18 +5,8 @@
 		<div class="flex items-center justify-center">
 			{% from "helpers/_form.html" import render_field %}
 			<form class="w-2/4" action="/login" method="post">
-				<div class="mb-3">
-					<!-- <input class="input-text" autocomplete="off" autofocus name="username" placeholder="Username" type="text" /> -->
-					{{ render_field(form.username) }}
-				</div>
-				<div class="mb-3">
-					<!-- <input class="input-text" name="password" placeholder="Password" type="password" /> -->
-					{{ render_field(form.password) }}
-				</div>
-
-				<div class="mb-3 font-semibold flex items-center justify-center">
-					<button class="btn" type="submit">Enter</button>
-				</div>
+				{{ render_field(form.username) }} {{ render_field(form.password) }}
+				<button class="btn" type="submit">Enter</button>
 			</form>
 		</div>
 	</div>

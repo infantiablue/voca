@@ -1,21 +1,15 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
+from flask_login import login_required, current_user
+from .models import User, Word
 
 bp = Blueprint('profile', __name__)
 
 
-@bp.route('/dashboard')
+@bp.route('/')
+@login_required
 def dashboard():
-    return 'Dashboard'
-
-
-@bp.route('/add')
-def add():
-    return 'Add word'
-
-
-@bp.route('/edit')
-def edit():
-    return 'Edit'
+    words = current_user.words
+    return render_template('index.html', words=words)
 
 
 @bp.route('/account')

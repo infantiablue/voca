@@ -2,12 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+#main a {
+	@apply text-gray-200 border-b-2 border-dashed border-blue-600 hover:text-yellow-500;
+}
+
 input.input-text {
-	@apply text-lg w-full rounded-full border-2 border-gray-200 px-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent;
+	@apply text-lg rounded-md border-0 border-gray-200 px-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent;
 }
 
 .btn {
-	@apply text-lg p-2 w-1/2 rounded-full bg-green-600 text-white hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent;
+	@apply mb-1 font-semibold text-base p-2 w-max rounded-md bg-green-600 text-white hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent;
 }
 
 .page-header {
@@ -19,9 +23,11 @@ input.input-text {
 }
 
 .body-bg {
-	/* background-color: #eee;
-	background-image: linear-gradient(315deg, #141e30 0%, #243b55 74%); */
 	background: #141e30; /* fallback for old browsers */
 	background: -webkit-linear-gradient(to right, #243b55, #141e30); /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to bottom, #243b55, #141e30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.modal {
+	transition: opacity 0.25s ease;
 }

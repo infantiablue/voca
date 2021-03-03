@@ -1,7 +1,8 @@
-from flask import Blueprint, request, render_template, redirect, flash
+from flask import Blueprint, request, render_template, redirect, flash, abort, url_for
 from flask_login import login_manager, login_required, logout_user, LoginManager, login_user, current_user
 from wtforms import Form, StringField, PasswordField, validators
 from .models import db, User
+from .utils import is_safe_url
 from werkzeug.security import check_password_hash, generate_password_hash
 
 # initialize login manager
@@ -82,7 +83,13 @@ def login():
         flash("Logged in successfully.")
 
         # Redirect user to home page
-        return redirect('/')
+        next = request.args.get('next')
+        # is_safe_url should check if the url is safe for redirects.
+        # See http://flask.pocoo.org/snippets/62/ for an example.
+        if not is_safe_url(next):
+            return abort(400)
+
+        return redirect(next or '/')
     return render_template('login.html', form=form)
 
 
