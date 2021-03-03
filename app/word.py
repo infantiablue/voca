@@ -1,5 +1,5 @@
 import requests
-import json
+import os
 from flask import Blueprint, render_template, request, redirect, jsonify, flash
 from wtforms import Form, StringField, validators
 
@@ -41,8 +41,8 @@ def account():
 
 @bp.route('/api/lookup/<word>')
 def lookup(word):
-    app_id = 'fd0f1799'
-    app_key = 'b07f95f839de63b54d400c2f023658d3'
+    app_id = os.environ.get('OXFORD_APP_ID')
+    app_key = os.environ.get('OXFORD_APP_KEY')
     language = 'en-gb'
     fields = 'definitions%2Cexamples'  # TODO: escape URL
     strictMatch = 'false'
@@ -53,7 +53,8 @@ def lookup(word):
     r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
     res = r.json()
     word = []
-    print(res)
+    # print(res)
+    # Extracting crucial data from API result
     if 'results' in res:
         for r in res['results']:
             res = []
@@ -61,6 +62,8 @@ def lookup(word):
                 t = {}
                 t['lexical'] = l["lexicalCategory"]["text"].lower()
                 t['entry'] = []
+                if 'entries' not in l:
+                    return {}
                 for e in l['entries']:
                     for s in e['senses']:
                         m = []
@@ -75,4 +78,4 @@ def lookup(word):
             word.append({'result': res})
         return(jsonify(word))
     else:
-        return 404, {}
+        return {}
