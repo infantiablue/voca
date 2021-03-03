@@ -131,3 +131,10 @@ dmypy.json
 #venv
 .env/
 .envrc
+
+# Front End
+.webassets-cache
+node_modules
+
+# Flask Migrate
+migrations/

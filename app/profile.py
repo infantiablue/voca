@@ -1,23 +1,23 @@
 from flask import Blueprint
 
-profile_bp = Blueprint('profile', __name__)
+bp = Blueprint('profile', __name__)
 
 
-@profile_bp.route('/dashboard')
+@bp.route('/dashboard')
 def dashboard():
     return 'Dashboard'
 
 
-@profile_bp.route('/add')
+@bp.route('/add')
 def add():
     return 'Add word'
 
 
-@profile_bp.route('/edit')
+@bp.route('/edit')
 def edit():
     return 'Edit'
 
 
-@profile_bp.route('/account')
+@bp.route('/account')
 def account():
     return 'Account '

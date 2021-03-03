@@ -1,0 +1,32 @@
+{% extends "layout.html" %} {% block title %} Register {% endblock %} {% block main %}
+<div class="page-header"><h1>Registration</h1></div>
+<div class="flex flex-auto">
+	<div class="flex-1">
+		<div class="flex items-center justify-center">
+			{% from "helpers/_form.html" import render_field %}
+			<form class="w-2/4" action="/join" method="post">
+				<div class="mb-3">
+					<!-- <input class="input-text" autocomplete="off" autofocus name="username" placeholder="Username" type="text" /> -->
+					{{ render_field(form.username) }}
+				</div>
+				<div class="mb-3">
+					<!-- <input class="input-text" autocomplete="off" autofocus name="username" placeholder="Username" type="text" /> -->
+					{{ render_field(form.email) }}
+				</div>
+				<div class="mb-3">
+					<!-- <input class="input-text" name="password" placeholder="Password" type="password" /> -->
+					{{ render_field(form.password) }}
+				</div>
+				<div class="mb-3">
+					{{ render_field(form.confirmation) }}
+					<!-- <input class="input-text" name="confirmation" placeholder="Password (Again)" type="password" /> -->
+				</div>
+				<div class="mb-3 font-semibold flex items-center justify-center">
+					<button class="btn" type="submit">Register</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
