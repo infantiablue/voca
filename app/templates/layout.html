@@ -17,6 +17,11 @@
 
 		<!-- <link rel="stylesheet" href="css/normalize.css" /> -->
 		<!-- <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" /> -->
+		<link rel="preconnect" href="https://fonts.gstatic.com" />
+		<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Handlee&display=swap" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
 		{% assets "css" %}
 		<link href="{{ ASSET_URL }}" type="text/css" rel="stylesheet" />
 		{% endassets %}
@@ -26,7 +31,7 @@
 		<!-- <meta name="theme-color" content="#fafafa" /> -->
 	</head>
 
-	<body class="body-bg leading-normal tracking-normal h-screen">
+	<body class="body-bg leading-normal tracking-normal h-full">
 		<nav class="flex items-center justify-between flex-wrap bg-gray-800 p-2 fixed w-full z-10 top-0">
 			<div class="flex items-center flex-shrink-0 text-white mr-6">
 				<a class="text-white no-underline hover:text-white hover:no-underline" href="/">
@@ -45,31 +50,36 @@
 
 			<div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden pt-6 lg:pt-0" id="nav-content">
 				<ul class="list-reset lg:flex justify-end flex-1 items-center">
+					{% if not current_user.is_authenticated %}
 					<li class="mr-3">
-						<a class="inline-block py-2 px-4 text-white no-underline" href="/">Dashboard</a>
+						<a class="inline-block text-yellow-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4" href="/join">Join</a>
 					</li>
 					<li class="mr-3">
-						<a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4" href="/join">Join</a>
+						<a class="inline-block text-yellow-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4" href="/login">Login</a>
+					</li>
+					{% else %}
+					<li class="mr-3">
+						<a class="inline-block py-2 px-4 text-white no-underline" href="/dashboard">Dashboard</a>
 					</li>
 					<li class="mr-3">
-						<a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4" href="/login">Login</a>
+						<a class="inline-block text-yellow-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4" href="/word/add">Add Word</a>
 					</li>
 					<li class="mr-3">
-						<a class="inline-block text-gray-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4" href="/logout">Logout</a>
+						<a class="inline-block text-yellow-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4" href="/logout">Logout</a>
 					</li>
+					{% endif %}
 				</ul>
 			</div>
 		</nav>
-		<div id="main" class="container mx-auto">
-			<!-- Add your site or application content here -->
-			{% block main %}{% endblock %}
+		<div id="main" class="container mx-auto mt-16 pb-8">
+			<div class="rounded-md border-solid border-gray-100 mt-20 h-screen pt-4" style="background-color: #28587b">
+				<!-- Add your site or application content here -->
+				{% block main %}{% endblock %}
+			</div>
 		</div>
-		<script>
-			//Javascript to toggle the menu
-			document.getElementById("nav-toggle").onclick = function () {
-				document.getElementById("nav-content").classList.toggle("hidden");
-			};
-		</script>
+		<div id="footer" class="mb-4 text-center font-mono text-gray-200">Made with 🧡 by <a href="https://techika.com">Truong Phan</a></div>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script type="text/javascript" src="/static/dist/js/core.js"></script>
 		{%block script %}{% endblock %}
 	</body>
 </html>

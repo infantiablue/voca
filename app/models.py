@@ -12,7 +12,9 @@ words = db.Table('words',
                  db.Column('word_id', db.Integer, db.ForeignKey(
                      'word.id'), primary_key=True),
                  db.Column('user_id', db.Integer, db.ForeignKey(
-                     'user.id'), primary_key=True)
+                     'user.id'), primary_key=True),
+                 db.Column('timestamp', db.DateTime, nullable=False,
+                           default=datetime.utcnow)
                  )
 
 
@@ -24,7 +26,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.Text, unique=True, nullable=False, index=True)
     timestamp = db.Column(db.DateTime, nullable=False,
                           default=datetime.utcnow)
-    words = db.relationship('Word', secondary=words, lazy='subquery',
+    words = db.relationship('Word', secondary=words, lazy='dynamic',
                             backref=db.backref('user', lazy=True))
 
     def check_password(self, password):
@@ -35,7 +37,14 @@ class User(db.Model, UserMixin):
 class Word(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.Text, unique=True, nullable=False, index=True)
-    entries = db.relationship('Entry', backref='word', lazy=True)
+    senses = db.relationship('Sense', backref='word', lazy=True)
+
+
+# Sense model
+class Sense(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    word_id = db.Column(db.Integer, db.ForeignKey(Word.id), nullable=False)
+    entries = db.relationship('Entry', backref='sense', lazy=True)
 
 
 # Entry model
@@ -43,7 +52,7 @@ class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.Text, nullable=False, index=True)
     definition = db.Column(db.Text, nullable=False)
-    word_id = db.Column(db.Integer, db.ForeignKey(Word.id), nullable=False)
+    sense_id = db.Column(db.Integer, db.ForeignKey(Sense.id), nullable=False)
     examples = db.relationship('Example', backref='entry', lazy=True)
 
 
@@ -59,6 +68,7 @@ class Media(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.Text, nullable=False)
     kind = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     word_id = db.Column(db.Integer, db.ForeignKey(Word.id), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False,
                           default=datetime.utcnow)
@@ -67,7 +77,7 @@ class Media(db.Model):
 # Notes created by user model
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.Text, nullable=False)
+    text = db.Column(db.Text, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     word_id = db.Column(db.Integer, db.ForeignKey(Word.id), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False,

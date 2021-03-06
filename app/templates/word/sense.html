@@ -1,0 +1,60 @@
+{% extends "layout.html" %} {% block title %} {{word}} - Definitions {% endblock %} {% block main %}
+<div class="page-header"></div>
+<div class="container">
+	<div class="grid grid-cols-1 p-3 md:grid-cols-3">
+		<div class="col-start-1 col-span-2">
+			<div class="content-block">
+				<div id="word-content">
+					<h1 class="text-yellow-400 text-3xl font-semibold uppercase">{{word}}</h1>
+					<hr class="my-2" />
+					<span id="remove-word" class="material-icons text-white word-utils" data-word="{{ word | trim }}">delete_outline</span>
+					<span class="material-icons text-white word-utils"><a href="/edit/{{ word }}">edit_outline</a></span>
+					{% for r in data %}
+					<h2 class="text-lg mt-2 font-semibold text-yellow-600">{{ loop.index }} .</h2>
+					{% for sense in r.sense %}
+					<h3 class="text-base text-gray-400 italic font-mono">({{sense.lexical}})</h3>
+					<p></p>
+					{% for entry in sense.entry%}
+					<p class="font-semibold text-white font-mono text-lg">{{ entry.definition }}</p>
+					{% for e in entry.examples%}
+					<p class="italic text-white">- {{ e.text }}</p>
+					{% endfor %}
+					<p class="my-2"></p>
+					{% endfor %} {% endfor %} {% endfor %}
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			{% if note %}
+			<div class="content-block bg-white rounded-sm">
+				<h2 class="text-xl uppercase text-yellow-900 font-semibold">Note</h2>
+				<p class="note text-black text-lg font-light">{{ note |safe }}</p>
+			</div>
+			{% endif %} {% if media %}
+			<div class="content-block">
+				<h2 class="text-xl uppercase text-white">Media</h2>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %} {% block script%}
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#remove-word").click(() => {
+			let word = $("#remove-word").data("word");
+			console.log(word);
+
+			if (word) {
+				$.post("/word/remove", { word: word }, (data, status) => {
+					if (status == "success") {
+						// $(`#word_${word}`).remove();
+						window.location.replace("/dashboard");
+					} else {
+					}
+				});
+			}
+		});
+	});
+</script>
+{% endblock %}

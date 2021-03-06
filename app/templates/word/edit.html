@@ -1,0 +1,18 @@
+{% extends "layout.html" %} {% block title %} Add New Word {% endblock %} {% block main %}
+<div class="page-header">
+	<h1>Add notes for <span class="font-semibold font-mono text-yellow-400">{{ word }}</span></h1>
+</div>
+<div class="flex flex-auto">
+	<div class="flex-1">
+		<div class="flex items-center justify-center">
+			{% from "helpers/_form.html" import render_field %}
+			<div class="w-2/4">
+				<form id="the-form" action="/edit/{{word}}" method="post">
+					{{ render_field(form.note) }}
+					<button id="submit" class="btn" type="submit">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

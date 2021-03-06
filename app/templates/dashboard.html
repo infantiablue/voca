@@ -1,0 +1,114 @@
+{% extends "layout.html" %} {% block title %} Dashboard {% endblock %} {% block main %}
+<div class="page-header"></div>
+<div class="text-white p-5 grid grid-cols-1 md:grid-cols-3">
+	<div class="col">
+		<div class="content-block">
+			<h2 class="text-xl uppercase">Recently Added</h2>
+			{% if not words %}
+			<p class="text-yellow-200 mt-2">Oops, you have not any vocabulary to review. Please <a href="/word/add">add one</a> to start.</p>
+			{% else %}
+			<ul>
+				{% for w in words %}
+				<li id="word_{{ w.text }}" class="font-mono my-1 text-yellow-300 text-lg word">
+					<span class="word-preview"><a href="word/{{ w.text | trim }}">{{ w.text }}</a></span>
+				</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+		</div>
+	</div>
+	<div class="col">
+		<div class="content-block">
+			{% if random_word %}
+			<h2 class="text-xl uppercase">Random</h2>
+			<p class="text-xl font-mono text-yellow-400 font-semibold italic word"><a href="/word/{{ random_word.text }}">{{ random_word.text }}</a></p>
+			<p class="text-base font-mono text-gray-400 italic">({{ random_word.lexical }})</p>
+			<p class="text-base font-mono text-gray-100">{{ random_word.definition }}</p>
+			{% endif %}
+		</div>
+	</div>
+	<div class="col">
+		<div class="content-block bg-white rounded-sm">
+			<h2 class="text-xl uppercase text-yellow-900 font-semibold">Quote</h2>
+			<div id="quote-loader" class="loader"></div>
+			<div id="quote" class="note"></div>
+			<div id="quote-author"></div>
+		</div>
+		<div class="content-block bg-white rounded-sm">
+			<h2 class="text-xl uppercase text-yellow-900 font-semibold">Today I Learned</h2>
+			<div id="til-loader" class="loader"></div>
+			<div id="til" class="note"></div>
+			<div id="til-source"></div>
+		</div>
+	</div>
+</div>
+<div class="modal opacity-0 pointer-events-none absolute w-full h-full top-0 left-0 flex items-center justify-center">
+	<div class="modal-overlay absolute w-full h-full bg-black opacity-75 top-0 left-0 cursor-pointer"></div>
+	<div class="p-6 mt-16 absolute w-1/2 h-1/2 max-h-full bg-gray-100 rounded-sm shadow-lg overflow-y-scroll">
+		<div id="loading" class="flex items-center justify-between flex-wrap pt-2">
+			<div class="flex-grow lg:flex lg:items-center lg:justify-center lg:w-auto">
+				<div class="loader"></div>
+			</div>
+		</div>
+		<div id="modal-header" class="flex items-center justify-center flex-wrap pt-2">
+			<div class="flex-grow lg:flex lg:items-center lg:justify-end lg:w-auto">
+				<span id="remove-word" class="material-icons word-utils">delete_outline</span>
+				<span class="material-icons"><a id="edit-word" href="">edit_outline</a></span>
+			</div>
+		</div>
+		<div id="modal-content"></div>
+		<div id="modal-footer" class="flex items-center justify-between flex-wrap pt-2">
+			<div class="flex-grow lg:flex lg:items-center lg:justify-center lg:w-auto">
+				<button id="cancel" class="btn">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %} {% block script%}
+<script type="text/javascript">
+	$(document).ready(function () {
+		$.get("https://api.quotable.io/random", (data, status) => {
+			if (status == "success") {
+				$("#quote-loader").hide();
+				$("#quote").append(`<p>${data["content"]}</p>`);
+				$("#quote-author").append(`<p><a href="https://en.wikipedia.org/wiki/${data["author"]}" target="_blank">${data["author"]}</a></p>`);
+			} else {
+			}
+		});
+
+		$.get("https://www.reddit.com/r/todayilearned/random.json?limit=1&t=month", (data, status) => {
+			if (status == "success") {
+				let post = data[0]["data"]["children"][0]["data"];
+				$("#til-loader").hide();
+				$("#til").append(`<p>${post["title"]}</p>`);
+				$("#til-source").append(`<p><a href="${post["url"]}" target="_blank">Source</a></p>`);
+			} else {
+			}
+		});
+
+		// $(".word-preview").click((e) => {
+		// 	let word = e.target.parentElement.firstChild.textContent;
+		// 	$("#remove-word").data("word", word);
+		// 	$("#edit-word").attr("href", `/edit/${word}`);
+		// 	preview(word);
+		// });
+
+		$("#remove-word").click(() => {
+			let word = $("#remove-word").data("word");
+			if (word) {
+				$.post("/word/remove", { word: word }, (data, status) => {
+					if (status == "success") {
+						$(`#word_${word}`).remove();
+					} else {
+					}
+					toggleModal();
+				});
+			}
+		});
+
+		$("#cancel").click((e) => {
+			toggleModal();
+		});
+	});
+</script>
+{% endblock %}

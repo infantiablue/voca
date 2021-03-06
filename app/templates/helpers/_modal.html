@@ -1,0 +1,17 @@
+<div class="modal opacity-0 pointer-events-none absolute w-full h-full top-0 left-0 flex items-center justify-center">
+	<div class="modal-overlay absolute w-full h-full bg-black opacity-75 top-0 left-0 cursor-pointer"></div>
+	<div class="p-6 mt-16 absolute w-1/2 h-1/2 bg-gray-100 rounded-sm shadow-lg overflow-y-scroll">
+		<div id="modal-header" class="flex items-center justify-between flex-wrap pt-2">
+			<div class="flex-grow lg:flex lg:items-center lg:justify-center lg:w-auto">
+				<button id="confirm" class="btn mr-4">Confirm</button>
+				<button id="cancel" class="btn">Cancel</button>
+			</div>
+		</div>
+		<div id="loading" class="flex items-center justify-between flex-wrap pt-2">
+			<div class="flex-grow lg:flex lg:items-center lg:justify-center lg:w-auto">
+				<div class="loader"></div>
+			</div>
+		</div>
+		<div id="modal-content"></div>
+	</div>
+</div>

@@ -2,7 +2,7 @@
 <div class="mb-3">
 	<div class="text-gray-100 mb-2 text-lg"><span>{{ field.label }}</span></div>
 	{{ field(class="input-text", autocomplete="off", autofocus="on") | safe }} {% if field.errors %}
-	<ul class="errors">
+	<ul class="errors my-2 text-pink-500">
 		{% for error in field.errors %}
 		<li>{{ error }}</li>
 		{% endfor %}

@@ -1,6 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, flash, abort, url_for
 from flask_login import login_manager, login_required, logout_user, LoginManager, login_user, current_user
 from wtforms import Form, StringField, PasswordField, validators
+from wtforms.validators import ValidationError
 from .models import db, User
 from .utils import is_safe_url
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -12,12 +13,28 @@ login_manager = LoginManager()
 bp = Blueprint('auth', __name__)
 
 
+# Custom validator to check unique username
+def unique_username(form, field):
+    if User.query.filter_by(username=form.username.data).first():
+        raise ValidationError('This username has been taken.')
+
+
+# Custom validator to check unique email
+def unique_email(form, field):
+    if User.query.filter_by(email=form.email.data).first():
+        raise ValidationError('This email address has been registed.')
+
+
 class RegistrationForm(Form):
     username = StringField('Username', [
         validators.DataRequired(),
         validators.Length(min=4, max=25),
+        unique_username
     ])
-    email = StringField('Email Address', [validators.Length(min=6, max=35)])
+    email = StringField('Email Address', [
+        validators.Length(min=6, max=35),
+        unique_email
+    ])
     password = PasswordField('Password', [
         validators.DataRequired(),
         validators.EqualTo('confirmation', message='Passwords must match')
@@ -73,7 +90,11 @@ def login():
         # Query database for username
         logged_user = User.query.filter_by(
             username=form.username.data).first()
-        print(logged_user.username)
+
+        if not logged_user:
+            flash("Username is not existed.")
+            return redirect('/login')
+        # print(logged_user.username)
         # Ensure username exists and password is correct
         if not check_password_hash(logged_user.hash, form.password.data):
             return redirect('/login')

@@ -1,8 +1,6 @@
 import os
-from flask import Flask
-from flask.templating import render_template
+from flask import Flask, redirect, render_template
 from flask_assets import Environment, Bundle
-from flask_login import login_required
 from app import auth, profile, word
 from .models import db
 
@@ -20,6 +18,12 @@ def create_app():
     app.register_blueprint(profile.bp)
     app.register_blueprint(word.bp)
 
+    # Custom Error Page
+    @app.errorhandler(404)
+    def page_not_found(e):
+        # note that we set the 404 status explicitly
+        return render_template('404.html'), 404
+
     # Setup login manager
     auth.login_manager.init_app(app)
     auth.login_manager.login_view = 'auth.login'
@@ -31,5 +35,10 @@ def create_app():
     css = Bundle('src/css/*.css', filters='postcss',
                  output='dist/css/bundle.css')
     assets.register('css', css)
+
+    @app.route('/')
+    # @login_required
+    def index():
+        return redirect('/dashboard')
 
     return app

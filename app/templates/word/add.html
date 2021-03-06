@@ -13,7 +13,7 @@
 </div>
 <div class="modal opacity-0 pointer-events-none absolute w-full h-full top-0 left-0 flex items-center justify-center">
 	<div class="modal-overlay absolute w-full h-full bg-black opacity-75 top-0 left-0 cursor-pointer"></div>
-	<div class="p-6 mt-16 absolute w-1/2 max-h-full bg-gray-100 rounded-sm shadow-lg overflow-y-scroll">
+	<div class="p-6 mt-16 absolute w-1/2 h-1/2 max-h-full bg-gray-100 rounded-sm shadow-lg overflow-y-scroll">
 		<div id="modal-header" class="flex items-center justify-between flex-wrap pt-2">
 			<div class="flex-grow lg:flex lg:items-center lg:justify-center lg:w-auto">
 				<button id="confirm" class="btn mr-4">Confirm</button>
@@ -30,20 +30,17 @@
 </div>
 
 {% endblock %} {% block script %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
-		// $("#loader").hide();
-		$("#the-form").submit(function (e) {
-			return false;
-		});
 		$("#the-form").keypress((event) => {
 			if (event.which == 13) {
-				preview();
+				event.preventDefault();
+				preview($("input").val());
 			}
 		});
+
 		$("#submit").click((e) => {
-			preview();
+			preview($("input").val());
 		});
 
 		$("#confirm").click(() => {
@@ -53,47 +50,43 @@
 		$("#cancel").click((e) => {
 			toggleModal();
 		});
-
-		$(".modal-overlay").click(toggleModal);
 	});
 
-	let preview = () => {
-		let word = $("input").val();
-		$("#modal-content").empty();
-		$("#modal-header").hide();
-		$("#loading").show();
-		toggleModal();
-		$.get(`/api/lookup/${word}`, (data) => {
-			$("#loading").hide();
-			if (data.length > 0) {
-				$("#modal-header").show();
-				let r_count = 1;
-				for (let r of data) {
-					$("#modal-content").append(`<h2 class="text-lg mt-2 font-semibold text-blue-800">${r_count}.</h2>`);
-					for (let e of r.result) {
-						$("#modal-content").append(`<h3 class="text-lg text-green-900 italic font-mono font-semibold">(${e.lexical})</h3>`);
-						for (let d of e.entry) {
-							$("#modal-content").append(`<p></p>`);
-							$("#modal-content").append(`<p class="font-semibold">${d.definition}</p>`);
-							$("#prevmodal-contentiew").append(`<p></p>`);
-							for (let x of d.examples) {
-								$("#modal-content").append(`<p class="italic">- ${x.text} </p>`);
-							}
-						}
-						$("#modal-content").append(`<p class="my-2"></p>`);
-					}
-					r_count++;
-				}
-			} else {
-				$("#modal-content").append(`<h2 class="text-lg mt-2 font-semibold text-red-900">No entry found matching supplied </h2>`);
-				$("#modal-header").hide();
-			}
-		});
-	};
-	let toggleModal = () => {
-		const modal = document.querySelector(".modal");
-		modal.classList.toggle("opacity-0");
-		modal.classList.toggle("pointer-events-none");
-	};
+	// let preview = () => {
+	// 	let word = $("input").val();
+	// 	$("#modal-content").empty();
+	// 	$("#modal-header").hide();
+	// 	$("#loading").show();
+	// 	toggleModal();
+	// 	$.get(`/api/lookup/${word}`, (data) => {
+	// 		$("#loading").hide();
+	// 		if (data.length > 0) {
+	// 			$("#modal-header").show();
+	// 			let r_count = 1;
+	// 			for (let r of data) {
+	// 				$("#modal-content").append(`<h2 class="text-lg mt-2 font-semibold text-blue-800">${r_count}.</h2>`);
+	// 				for (let e of r.sense) {
+	// 					$("#modal-content").append(`<h3 class="text-lg text-green-900 italic font-mono font-semibold">(${e.lexical})</h3>`);
+	// 					for (let d of e.entry) {
+	// 						$("#modal-content").append(`<p></p>`);
+	// 						$("#modal-content").append(`<p class="font-semibold">${d.definition}</p>`);
+	// 						$("#prevmodal-contentiew").append(`<p></p>`);
+	// 						for (let x of d.examples) $("#modal-content").append(`<p class="italic">- ${x.text} </p>`);
+	// 					}
+	// 					$("#modal-content").append(`<p class="my-2"></p>`);
+	// 				}
+	// 				r_count++;
+	// 			}
+	// 		} else {
+	// 			$("#modal-content").append(`<h2 class="text-lg mt-2 font-semibold text-red-900">No entry found matching supplied </h2>`);
+	// 			$("#modal-header").hide();
+	// 		}
+	// 	});
+	// };
+	// let toggleModal = () => {
+	// 	const modal = document.querySelector(".modal");
+	// 	modal.classList.toggle("opacity-0");
+	// 	modal.classList.toggle("pointer-events-none");
+	// };
 </script>
 {% endblock%}
