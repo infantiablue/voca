@@ -5,7 +5,7 @@
 		<div class="flex items-center justify-center">
 			{% from "helpers/_form.html" import render_field %}
 			<div class="w-2/4">
-				<form id="the-form" action="/word/add" method="post">{{ render_field(form.word) }}</form>
+				<form id="the-form" class="text-black font-semibold font-mono" action="/word/add" method="post">{{ render_field(form.word) }}</form>
 				<button id="submit" class="btn" type="submit">Submit</button>
 			</div>
 		</div>
@@ -51,42 +51,5 @@
 			toggleModal();
 		});
 	});
-
-	// let preview = () => {
-	// 	let word = $("input").val();
-	// 	$("#modal-content").empty();
-	// 	$("#modal-header").hide();
-	// 	$("#loading").show();
-	// 	toggleModal();
-	// 	$.get(`/api/lookup/${word}`, (data) => {
-	// 		$("#loading").hide();
-	// 		if (data.length > 0) {
-	// 			$("#modal-header").show();
-	// 			let r_count = 1;
-	// 			for (let r of data) {
-	// 				$("#modal-content").append(`<h2 class="text-lg mt-2 font-semibold text-blue-800">${r_count}.</h2>`);
-	// 				for (let e of r.sense) {
-	// 					$("#modal-content").append(`<h3 class="text-lg text-green-900 italic font-mono font-semibold">(${e.lexical})</h3>`);
-	// 					for (let d of e.entry) {
-	// 						$("#modal-content").append(`<p></p>`);
-	// 						$("#modal-content").append(`<p class="font-semibold">${d.definition}</p>`);
-	// 						$("#prevmodal-contentiew").append(`<p></p>`);
-	// 						for (let x of d.examples) $("#modal-content").append(`<p class="italic">- ${x.text} </p>`);
-	// 					}
-	// 					$("#modal-content").append(`<p class="my-2"></p>`);
-	// 				}
-	// 				r_count++;
-	// 			}
-	// 		} else {
-	// 			$("#modal-content").append(`<h2 class="text-lg mt-2 font-semibold text-red-900">No entry found matching supplied </h2>`);
-	// 			$("#modal-header").hide();
-	// 		}
-	// 	});
-	// };
-	// let toggleModal = () => {
-	// 	const modal = document.querySelector(".modal");
-	// 	modal.classList.toggle("opacity-0");
-	// 	modal.classList.toggle("pointer-events-none");
-	// };
 </script>
 {% endblock%}

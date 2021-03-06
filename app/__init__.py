@@ -1,6 +1,8 @@
 import os
 from flask import Flask, redirect, render_template
 from flask_assets import Environment, Bundle
+from flask_script import Manager
+from flask_migrate import Migrate, MigrateCommand
 from app import auth, profile, word
 from .models import db
 
@@ -12,6 +14,10 @@ def create_app():
 
     # Initialize database instance
     db.init_app(app)
+
+    migrate = Migrate(app, db)
+    manager = Manager(app)
+    manager.add_command('db', MigrateCommand)
 
     # Register Blueprints
     app.register_blueprint(auth.bp)

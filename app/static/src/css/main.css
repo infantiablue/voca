@@ -20,7 +20,7 @@ textarea.input-text {
 }
 
 .page-header {
-	@apply container mb-4 text-center;
+	@apply container mb-4 mt-4 text-center;
 }
 
 .page-header h1 {
@@ -29,8 +29,8 @@ textarea.input-text {
 
 .body-bg {
 	background: #141e30; /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #243b55, #273652); /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to bottom, #243b55, #273652); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	background: -webkit-linear-gradient(to bottom, #708399, #033355); /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to bottom, #708399, #033355); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .modal {
@@ -97,4 +97,43 @@ textarea.input-text {
 
 a#edit-word {
 	@apply text-black border-0 border-none !important;
+}
+
+.alert-message {
+	@apply text-blue-600;
+}
+
+.alert-success {
+	@apply text-green-600;
+}
+
+.alert-error {
+	@apply text-red-600;
+}
+
+.alert-warning {
+	@apply text-yellow-600;
+}
+/* The alert message box */
+.alert {
+	padding: 10px;
+	background-color: white; /* Red */
+	margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+	margin-left: 15px;
+	color: black;
+	font-weight: bold;
+	float: right;
+	font-size: 22px;
+	line-height: 20px;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+	@apply text-blue-700;
 }

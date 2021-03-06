@@ -101,7 +101,7 @@ def login():
 
         # Remember which user has logged in
         login_user(logged_user)
-        flash("Logged in successfully.")
+        # flash("Logged in successfully.")
 
         # Redirect user to home page
         next = request.args.get('next')

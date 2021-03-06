@@ -47,7 +47,7 @@
 					</svg>
 				</button>
 			</div>
-
+			<!-- Navigation Bar -->
 			<div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden pt-6 lg:pt-0" id="nav-content">
 				<ul class="list-reset lg:flex justify-end flex-1 items-center">
 					{% if not current_user.is_authenticated %}
@@ -59,10 +59,13 @@
 					</li>
 					{% else %}
 					<li class="mr-3">
-						<a class="inline-block py-2 px-4 text-white no-underline" href="/dashboard">Dashboard</a>
+						<a class="inline-block text-yellow-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4" href="/dashboard">Dashboard</a>
 					</li>
 					<li class="mr-3">
 						<a class="inline-block text-yellow-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4" href="/word/add">Add Word</a>
+					</li>
+					<li class="mr-3">
+						<a class="inline-block text-yellow-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4" href="/account">Account</a>
 					</li>
 					<li class="mr-3">
 						<a class="inline-block text-yellow-600 no-underline hover:text-gray-200 hover:text-underline py-2 px-4" href="/logout">Logout</a>
@@ -71,8 +74,17 @@
 				</ul>
 			</div>
 		</nav>
-		<div id="main" class="container mx-auto mt-16 pb-8">
-			<div class="rounded-md border-solid border-gray-100 mt-20 h-screen pt-4" style="background-color: #28587b">
+		<div id="main" class="container mx-auto mt-20 pb-8">
+			<div class="rounded-md border-solid border-gray-100 h-screen max-h-full pt-2 pb-4 overflow-y-auto mt-10" style="background-color: #28587b">
+				<div class="container w-2/3 mx-auto bg-gray-100 text-center rounded-sm">
+					{% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+					<!-- <div class="py-2 alert alert-{{category}}">{{ message }}<a href="#" class="close"></a></div> -->
+					<div class="alert">
+						<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+						<span class="py-2 alert alert-{{category}}">{{ message }}</span>
+					</div>
+					{% endfor %} {% endif %} {% endwith %}
+				</div>
 				<!-- Add your site or application content here -->
 				{% block main %}{% endblock %}
 			</div>

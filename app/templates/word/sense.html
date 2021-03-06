@@ -12,7 +12,7 @@
 					{% for r in data %}
 					<h2 class="text-lg mt-2 font-semibold text-yellow-600">{{ loop.index }} .</h2>
 					{% for sense in r.sense %}
-					<h3 class="text-base text-gray-400 italic font-mono">({{sense.lexical}})</h3>
+					<h3 class="text-lg text-gray-400 italic font-mono">({{sense.lexical}})</h3>
 					<p></p>
 					{% for entry in sense.entry%}
 					<p class="font-semibold text-white font-mono text-lg">{{ entry.definition }}</p>
@@ -43,16 +43,15 @@
 	$(document).ready(function () {
 		$("#remove-word").click(() => {
 			let word = $("#remove-word").data("word");
-			console.log(word);
-
-			if (word) {
-				$.post("/word/remove", { word: word }, (data, status) => {
-					if (status == "success") {
-						// $(`#word_${word}`).remove();
-						window.location.replace("/dashboard");
-					} else {
-					}
-				});
+			if (confirm("Are you sure to delete ?")) {
+				if (word) {
+					$.post("/word/remove", { word: word }, (data, status) => {
+						if (status == "success") {
+							window.location.replace("/dashboard");
+						} else {
+						}
+					});
+				}
 			}
 		});
 	});

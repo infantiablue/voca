@@ -27,7 +27,7 @@ def dashboard():
     return 'List'
 
 
-@bp.route('/word/<word>')
+@bp.route('/sense/<word>')
 @login_required
 def sense(word):
     w = current_user.words.filter_by(text=word.lower()).first()
@@ -44,7 +44,7 @@ def sense(word):
             with open(f'cache/{w.text}.json') as json_file:
                 data = json.load(json_file)
         except FileNotFoundError:
-            pass
+            flash("An error has been occured.", category="error")
         return render_template('word/sense.html', data=data, word=word, note=note_text)
     else:
         abort(404)
@@ -55,28 +55,25 @@ def sense(word):
 def add():
     form = AddWordForm(request.form)
     if request.method == 'POST' and form.validate():
-        input_word = form.word.data
+        input_word = form.word.data.lower()
         word = Word.query.filter_by(text=input_word).first()
         if not word:
-            new_word = Word(text=input_word.lower())
+            new_word = Word(text=input_word)
             current_user.words.append(new_word)
             db.session.add(new_word)
         else:
-            current_user.words.append(word)
-
+            if not current_user.words.filter_by(text=input_word).first():
+                current_user.words.append(word)
+            else:
+                flash("This word is duplicated.", category="error")
+                return redirect(f'/sense/{input_word}')
         # Add new word to the database
         db.session.commit()
-        try:
-            with open(f'cache/{word}.json') as json_file:
-                data = json.load(json_file)
-                print(json.dumps(data, indent=4))
-        except FileNotFoundError:
-            flash("An error occurred.")
-            return redirect('/word/add')
-        flash("A new word has been added.")
 
-        # Redirect user to home page
-        return redirect('/dashboard')
+        flash("A new word has been added.", category="success")
+
+        # Redirect user to new word page
+        return redirect(f'/sense/{input_word}')
     return render_template('word/add.html', form=form)
 
 
@@ -114,12 +111,14 @@ def remove():
     w = Word.query.filter_by(text=word).first()
     current_user.words.remove(w)
     db.session.commit()
+    flash("The word has been removed successfully", category="success")
     return jsonify({'message': "success"})
 
 
 @ bp.route('/api/lookup/<word>')
 @ login_required
 def lookup(word):
+    word = word.lower()
     try:
         with open(f'cache/{word}.json') as json_file:
             data = json.load(json_file)
@@ -132,7 +131,7 @@ def lookup(word):
         strictMatch = 'false'
 
         url = 'https://od-api.oxforddictionaries.com:443/api/v2/entries/' + language + \
-            '/' + word.lower() + '?fields=' + fields + '&strictMatch=' + strictMatch
+            '/' + word + '?fields=' + fields + '&strictMatch=' + strictMatch
 
         r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
         res = r.json()
@@ -160,7 +159,7 @@ def lookup(word):
 
                     res.append(t)
                 w.append({'sense': res})
-            with open(f'cache/{word.lower()}.json', 'w') as outfile:
+            with open(f'cache/{word}.json', 'w') as outfile:
                 json.dump(w, outfile)
             return(jsonify(w))
         else:

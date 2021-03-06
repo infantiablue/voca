@@ -4,13 +4,13 @@
 	<div class="col">
 		<div class="content-block">
 			<h2 class="text-xl uppercase">Recently Added</h2>
-			{% if not words %}
-			<p class="text-yellow-200 mt-2">Oops, you have not any vocabulary to review. Please <a href="/word/add">add one</a> to start.</p>
+			{% if total_words == 0 %}
+			<p class="text-yellow-200 mt-2">Oops, you do not have any vocabulary to review. <br />Please add one to start.</p>
 			{% else %}
 			<ul>
 				{% for w in words %}
 				<li id="word_{{ w.text }}" class="font-mono my-1 text-yellow-300 text-lg word">
-					<span class="word-preview"><a href="word/{{ w.text | trim }}">{{ w.text }}</a></span>
+					<span class="word-preview"><a href="sense/{{ w.text | trim }}">{{ w.text }}</a></span>
 				</li>
 				{% endfor %}
 			</ul>
@@ -18,13 +18,25 @@
 		</div>
 	</div>
 	<div class="col">
+		{% if total_words > 0 %}
 		<div class="content-block">
-			{% if random_word %}
+			<h2 class="text-xl uppercase">You added <span class="text-yellow-600 font-semibold font-mono">{{ total_words }}</span> words</h2>
+		</div>
+		{% endif %} {% if random_word %}
+		<div class="content-block">
 			<h2 class="text-xl uppercase">Random</h2>
-			<p class="text-xl font-mono text-yellow-400 font-semibold italic word"><a href="/word/{{ random_word.text }}">{{ random_word.text }}</a></p>
+			<p class="text-xl font-mono text-yellow-400 font-semibold italic word"><a href="/sense/{{ random_word.text }}">{{ random_word.text }}</a></p>
 			<p class="text-base font-mono text-gray-400 italic">({{ random_word.lexical }})</p>
-			<p class="text-base font-mono text-gray-100">{{ random_word.definition }}</p>
-			{% endif %}
+			<p class="text-base font-mono text-yellow-200">{{ random_word.definition }}</p>
+		</div>
+		{% endif %}
+		<div class="content-block">
+			<h2 class="text-xl uppercase">Add new word</h2>
+			{% from "helpers/_form.html" import render_field %}
+			<div class="w-full">
+				<form id="new-word-form" class="text-black font-semibold font-mono" action="/word/add" method="post">{{ render_field(addword_form.word) }}</form>
+				<button id="submit" class="btn" type="submit">Submit</button>
+			</div>
 		</div>
 	</div>
 	<div class="col">
@@ -42,7 +54,7 @@
 		</div>
 	</div>
 </div>
-<div class="modal opacity-0 pointer-events-none absolute w-full h-full top-0 left-0 flex items-center justify-center">
+<!-- <div class="modal opacity-0 pointer-events-none absolute w-full h-full top-0 left-0 flex items-center justify-center">
 	<div class="modal-overlay absolute w-full h-full bg-black opacity-75 top-0 left-0 cursor-pointer"></div>
 	<div class="p-6 mt-16 absolute w-1/2 h-1/2 max-h-full bg-gray-100 rounded-sm shadow-lg overflow-y-scroll">
 		<div id="loading" class="flex items-center justify-between flex-wrap pt-2">
@@ -62,6 +74,23 @@
 				<button id="cancel" class="btn">Cancel</button>
 			</div>
 		</div>
+	</div>
+</div> -->
+<div class="modal opacity-0 pointer-events-none absolute w-full h-full top-0 left-0 flex items-center justify-center">
+	<div class="modal-overlay absolute w-full h-full bg-black opacity-75 top-0 left-0 cursor-pointer"></div>
+	<div class="p-6 mt-16 absolute w-1/2 h-1/2 max-h-full bg-gray-100 rounded-sm shadow-lg overflow-y-scroll">
+		<div id="modal-header" class="flex items-center justify-between flex-wrap pt-2">
+			<div class="flex-grow lg:flex lg:items-center lg:justify-center lg:w-auto">
+				<button id="confirm" class="btn mr-4">Confirm</button>
+				<button id="cancel" class="btn">Cancel</button>
+			</div>
+		</div>
+		<div id="loading" class="flex items-center justify-between flex-wrap pt-2">
+			<div class="flex-grow lg:flex lg:items-center lg:justify-center lg:w-auto">
+				<div class="loader"></div>
+			</div>
+		</div>
+		<div id="modal-content"></div>
 	</div>
 </div>
 {% endblock %} {% block script%}
@@ -93,17 +122,32 @@
 		// 	preview(word);
 		// });
 
-		$("#remove-word").click(() => {
-			let word = $("#remove-word").data("word");
-			if (word) {
-				$.post("/word/remove", { word: word }, (data, status) => {
-					if (status == "success") {
-						$(`#word_${word}`).remove();
-					} else {
-					}
-					toggleModal();
-				});
+		// $("#remove-word").click(() => {
+		// 	let word = $("#remove-word").data("word");
+		// 	if (word) {
+		// 		$.post("/word/remove", { word: word }, (data, status) => {
+		// 			if (status == "success") {
+		// 				$(`#word_${word}`).remove();
+		// 			} else {
+		// 			}
+		// 			toggleModal();
+		// 		});
+		// 	}
+		// });
+		$(".content-block label").remove();
+		$("#new-word-form").keypress((event) => {
+			if (event.which == 13) {
+				event.preventDefault();
+				preview($("input").val());
 			}
+		});
+
+		$("#submit").click((e) => {
+			preview($("input").val());
+		});
+
+		$("#confirm").click(() => {
+			$("#new-word-form").submit();
 		});
 
 		$("#cancel").click((e) => {

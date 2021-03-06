@@ -138,3 +138,7 @@ node_modules
 
 # Flask Migrate
 migrations/
+backup/
+
+#Google Cloud
+storage.json
