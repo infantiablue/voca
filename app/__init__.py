@@ -48,3 +48,6 @@ def create_app():
         return redirect('/dashboard')
 
     return app
+
+
+app = create_app()
