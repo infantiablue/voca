@@ -91,7 +91,9 @@
 		</div>
 		<div id="footer" class="mb-4 text-center font-mono text-gray-200">Made with 🧡 by <a href="https://techika.com">Truong Phan</a></div>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-		<script type="text/javascript" src="/static/dist/js/core.js"></script>
-		{%block script %}{% endblock %}
+		<!-- <script type="text/javascript" src="/static/dist/js/core.js"></script> -->
+		{% assets "js" %}
+		<script src="{{ ASSET_URL }}" type="text/javascript"></script>
+		{% endassets %} {%block script %}{% endblock %}
 	</body>
 </html>

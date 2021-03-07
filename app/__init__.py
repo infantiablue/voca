@@ -15,6 +15,7 @@ def create_app():
     # Initialize database instance
     db.init_app(app)
 
+    # DB migration
     migrate = Migrate(app, db)
     manager = Manager(app)
     manager.add_command('db', MigrateCommand)
@@ -40,6 +41,8 @@ def create_app():
 
     css = Bundle('src/css/*.css', filters='postcss',
                  output='dist/css/bundle.css')
+    js = Bundle('src/js/*.js', filters='jsmin', output='dist/js/bundle.js')
+    assets.register('js', js)
     assets.register('css', css)
 
     @app.route('/')

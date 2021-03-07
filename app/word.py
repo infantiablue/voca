@@ -87,7 +87,6 @@ def edit(word):
         note = Note.query.filter_by(
             user_id=current_user.id, word_id=w.id).first()
     if request.method == 'POST' and form.validate():
-        print('requesting')
         if note:
             note.text = form.note.data
         else:
@@ -136,7 +135,6 @@ def lookup(word):
         r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
         res = r.json()
         w = []
-        print(res)
         # Extracting crucial data from API result
         if 'results' in res:
             for r in res['results']:
