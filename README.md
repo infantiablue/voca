@@ -54,3 +54,5 @@ Configure SSL
     sudo apt install software-properties-common
     sudo apt install certbot python3-certbot-nginx
     sudo certbot --nginx -d voca.techika.com
+
+Create nginx conf file
