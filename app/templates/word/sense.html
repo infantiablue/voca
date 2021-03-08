@@ -5,7 +5,7 @@
 		<div class="col-start-1 col-span-2">
 			<div class="content-block">
 				<div id="word-content">
-					<h1 class="text-yellow-400 text-3xl font-semibold uppercase">{{word}}</h1>
+					<h1 class="text-yellow-400 text-3xl font-semibold font-mono lowercase">{{word}}</h1>
 					<hr class="my-2" />
 					<span id="remove-word" class="material-icons text-white word-utils" data-word="{{ word | trim }}">delete_outline</span>
 					<span class="material-icons text-white word-utils"><a href="/edit/{{ word }}">edit_outline</a></span>
@@ -17,7 +17,7 @@
 					{% for entry in sense.entry%}
 					<p class="font-semibold text-white font-mono text-lg">{{ entry.definition }}</p>
 					{% for e in entry.examples%}
-					<p class="italic text-white">- {{ e.text }}</p>
+					<p class="text-white">- {{ e.text }}</p>
 					{% endfor %}
 					<p class="my-2"></p>
 					{% endfor %} {% endfor %} {% endfor %}

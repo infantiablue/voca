@@ -2,8 +2,9 @@
 import requests
 import os
 import json
+# import app
 from flask_login import current_user, login_required
-from flask import Blueprint, render_template, request, redirect, jsonify, flash, abort
+from flask import Blueprint, render_template, request, redirect, jsonify, flash, abort, current_app
 from wtforms import Form, StringField, TextAreaField, validators
 from .models import db, Word, Note
 
@@ -21,10 +22,12 @@ class EditWordForm(Form):
     note = TextAreaField('Note', [])
 
 
-@bp.route('/words/list')
+@bp.route('/words/browse')
 @login_required
-def dashboard():
-    return 'List'
+def browse():
+    words = current_user.words.order_by('text').all()
+    total_words = current_user.words.count()
+    return render_template('word/browse.html', words=words, total_words=total_words)
 
 
 @bp.route('/sense/<word>')
@@ -133,32 +136,37 @@ def lookup(word):
             '/' + word + '?fields=' + fields + '&strictMatch=' + strictMatch
 
         r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
-        res = r.json()
-        w = []
-        # Extracting crucial data from API result
-        if 'results' in res:
-            for r in res['results']:
-                res = []
-                for l in r['lexicalEntries']:
-                    t = {}
-                    t['lexical'] = l["lexicalCategory"]["text"].lower()
-                    t['entry'] = []
-                    if 'entries' not in l:
-                        return {}
-                    for e in l['entries']:
-                        for s in e['senses']:
-                            m = []
-                            if 'examples' in s:
-                                for ex in s['examples']:
-                                    m.append(ex)
-                            for d in s['definitions']:
-                                t['entry'].append(
-                                    {'definition': d, 'examples': m})
+        if (r.status_code == 200):
+            res = r.json()
+            w = []
+            # Extracting crucial data from API result
+            if 'results' in res:
+                for r in res['results']:
+                    res = []
+                    for l in r['lexicalEntries']:
+                        t = {}
+                        t['lexical'] = l["lexicalCategory"]["text"].lower()
+                        t['entry'] = []
+                        if 'entries' not in l:
+                            return {}
+                        for e in l['entries']:
+                            for s in e['senses']:
+                                m = []
+                                if 'examples' in s:
+                                    for ex in s['examples']:
+                                        m.append(ex)
+                                for d in s['definitions']:
+                                    t['entry'].append(
+                                        {'definition': d, 'examples': m})
 
-                    res.append(t)
-                w.append({'sense': res})
-            with open(f'cache/{word}.json', 'w') as outfile:
-                json.dump(w, outfile)
-            return(jsonify(w))
+                        res.append(t)
+                    w.append({'sense': res})
+                with open(f'cache/{word}.json', 'w') as outfile:
+                    json.dump(w, outfile)
+                return(jsonify(w))
+            else:
+                return {}
         else:
+            current_app.logger.error(
+                f'API credential issue with HTTP CODE {r.status_code} ID {app_id} and KEY {app_key}')
             return {}

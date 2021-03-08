@@ -22,7 +22,7 @@ class AccountForm(Form):
 @login_required
 def dashboard():
     addword_form = AddWordForm()
-    words = current_user.words.limit(15).all()
+    words = current_user.words.limit(10).all()
     total_words = current_user.words.count()
     random_word = {}
     temp = current_user.words.filter_by().order_by(

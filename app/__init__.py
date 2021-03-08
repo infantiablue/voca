@@ -1,4 +1,6 @@
 import os
+import logging
+from logging import FileHandler, Formatter
 from flask import Flask, redirect, render_template
 from flask_assets import Environment, Bundle
 from flask_script import Manager
@@ -11,6 +13,16 @@ def create_app():
     # Create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(os.environ.get('APP_SETTINGS'))
+
+    # Logging
+    # if not app.debug:
+    logging.basicConfig(level=logging.WARNING)
+    file_handler = FileHandler('./logs/app.log')
+    app.logger.addHandler(file_handler)
+    file_handler.setFormatter(Formatter(
+        '%(asctime)s %(levelname)s: %(message)s '
+        '[in %(pathname)s:%(lineno)d]'
+    ))
 
     # Initialize database instance
     db.init_app(app)

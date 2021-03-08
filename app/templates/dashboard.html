@@ -12,7 +12,9 @@
 				<li id="word_{{ w.text }}" class="font-mono my-1 text-yellow-300 text-lg word">
 					<span class="word-preview"><a href="sense/{{ w.text | trim }}">{{ w.text }}</a></span>
 				</li>
-				{% endfor %}
+				{% endfor %} {% if total_words > 10 %}
+				<a href="/words/browse">more ... </a>
+				{% endif %}
 			</ul>
 			{% endif %}
 		</div>
@@ -20,7 +22,7 @@
 	<div class="col">
 		{% if total_words > 0 %}
 		<div class="content-block">
-			<h2 class="text-xl uppercase">You added <span class="text-yellow-600 font-semibold font-mono">{{ total_words }}</span> words</h2>
+			<h2 class="text-xl uppercase">You added <span class="text-yellow-400 font-semibold font-mono">{{ total_words }}</span> words</h2>
 		</div>
 		{% endif %} {% if random_word %}
 		<div class="content-block">
@@ -41,13 +43,13 @@
 	</div>
 	<div class="col">
 		<div class="content-block bg-white rounded-sm">
-			<h2 class="text-xl uppercase text-yellow-900 font-semibold">Quote</h2>
+			<h2 class="text-xl uppercase text-yellow-600 font-semibold">Quote</h2>
 			<div id="quote-loader" class="loader"></div>
 			<div id="quote" class="note"></div>
 			<div id="quote-author"></div>
 		</div>
 		<div class="content-block bg-white rounded-sm">
-			<h2 class="text-xl uppercase text-yellow-900 font-semibold">Today I Learned</h2>
+			<h2 class="text-xl uppercase text-yellow-600 font-semibold">Today I Learned</h2>
 			<div id="til-loader" class="loader"></div>
 			<div id="til" class="note"></div>
 			<div id="til-source"></div>
