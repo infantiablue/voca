@@ -1,4 +1,5 @@
 # voca
+
 Builder App for CS50x final project
 
 ## Set Up
@@ -51,5 +52,5 @@ Hook `direnv` to bash shell, by adding the line below to `~/.bashrc`:
 Configure SSL
 
     sudo apt install software-properties-common
-    sudo apt install certbot python-certbot-nginx
-    sudo certbot --nginx -d your_domain -d www.your_domain
+    sudo apt install certbot python3-certbot-nginx
+    sudo certbot --nginx -d voca.techika.com
