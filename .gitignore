@@ -137,7 +137,7 @@ dmypy.json
 node_modules
 
 # Flask Migrate
-migrations/
+# migrations/
 backup/
 
 #Google Cloud
