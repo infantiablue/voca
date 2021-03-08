@@ -4,7 +4,7 @@ import os
 import json
 # import app
 from flask_login import current_user, login_required
-from flask import Blueprint, render_template, request, redirect, jsonify, flash, abort, current_app
+from flask import Blueprint, render_template, request, redirect, jsonify, flash, abort, current_app, url_for
 from wtforms import Form, StringField, TextAreaField, validators
 from .models import db, Word, Note
 
@@ -22,12 +22,39 @@ class EditWordForm(Form):
     note = TextAreaField('Note', [])
 
 
+@bp.route('/words/browse/page/<int:page>')
 @bp.route('/words/browse')
 @login_required
-def browse():
-    words = current_user.words.order_by('text').all()
+def browse(page=1):
+    # Pagination
+    words = current_user.words.order_by(
+        'text').paginate(page, per_page=60)
+    next_url = url_for('word.browse', page=words.next_num) \
+        if words.has_next else None
+    prev_url = url_for('word.browse', page=words.prev_num) \
+        if words.has_prev else None
     total_words = current_user.words.count()
-    return render_template('word/browse.html', words=words, total_words=total_words)
+    base_num = int(total_words/3)
+    remainder = total_words % 3
+    col1_n = col2_n = col3_n = base_num
+    if remainder == 1:
+        col1_n += 1
+    if remainder == 2:
+        col1_n += 1
+        col2_n += 1
+    col1 = []
+    col2 = []
+    col3 = []
+    for idx, val in enumerate(words.items):
+        if idx < col1_n:
+            col1.append(val)
+        if idx < col1_n + col2_n and idx >= col1_n:
+            col2.append(val)
+        if idx < col1_n + col2_n + col3_n and idx >= col1_n + col2_n:
+            col3.append(val)
+    cols = [col1, col2, col3]
+
+    return render_template('word/browse.html', words=words, total_words=total_words, cols=cols, next_url=next_url,  prev_url=prev_url)
 
 
 @bp.route('/sense/<word>')
@@ -35,7 +62,6 @@ def browse():
 def sense(word):
     w = current_user.words.filter_by(text=word.lower()).first()
     if w:
-        # w = current_user.words.filter_by(text=word).first()
         note = Note.query.filter_by(
             user_id=current_user.id, word_id=current_user.words.filter_by(text=word).first().id).first()
         note_text = ''

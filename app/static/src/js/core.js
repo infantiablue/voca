@@ -23,9 +23,9 @@ let preview = (word) => {
 		if (data.length > 0) {
 			$("#modal-header").show();
 			let r_count = 1;
-			$("#modal-content").append(`<h1 class="text-yellow-800 text-3xl font-semibold uppercase">${word}</h1>`);
+			$("#modal-content").append(`<h1 class="text-yellow-600 text-3xl font-semibold uppercase">${word}</h1>`);
 			for (let r of data) {
-				$("#modal-content").append(`<h2 class="text-lg mt-2 font-semibold text-yellow-600">${r_count}.</h2>`);
+				$("#modal-content").append(`<h2 class="text-lg mt-2 font-semibold text-yellow-800">${r_count}.</h2>`);
 				for (let e of r.sense) {
 					$("#modal-content").append(`<h3 class="text-base text-gray-400 italic font-mono">(${e.lexical})</h3>`);
 					for (let d of e.entry) {

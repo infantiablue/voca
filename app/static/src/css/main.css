@@ -24,7 +24,7 @@ textarea.input-text {
 }
 
 .page-header h1 {
-	@apply text-3xl font-bold text-yellow-400;
+	@apply text-3xl font-bold text-gray-200;
 }
 
 .body-bg {
@@ -95,12 +95,16 @@ textarea.input-text {
 	cursor: pointer;
 }
 
-.word-preview:hover {
-	cursor: pointer;
+.word-link a:hover {
+	@apply text-green-400 !important;
 }
 
 a#edit-word {
 	@apply text-black border-0 border-none !important;
+}
+
+.pagination a {
+	@apply border-0 border-none !important;
 }
 
 .alert-message {

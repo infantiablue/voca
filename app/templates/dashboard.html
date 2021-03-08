@@ -10,7 +10,7 @@
 			<ul>
 				{% for w in words %}
 				<li id="word_{{ w.text }}" class="font-mono my-1 text-yellow-300 text-lg word">
-					<span class="word-preview"><a href="sense/{{ w.text | trim }}">{{ w.text }}</a></span>
+					<span class="word-link"><a href="sense/{{ w.text | trim }}">{{ w.text }}</a></span>
 				</li>
 				{% endfor %} {% if total_words > 10 %}
 				<a href="/words/browse">more ... </a>
@@ -27,7 +27,7 @@
 		{% endif %} {% if random_word %}
 		<div class="content-block">
 			<h2 class="text-xl uppercase">Random</h2>
-			<p class="text-xl font-mono text-yellow-400 font-semibold italic word"><a href="/sense/{{ random_word.text }}">{{ random_word.text }}</a></p>
+			<p class="text-xl font-mono text-yellow-400 font-semibold italic word word-link"><a href="/sense/{{ random_word.text }}">{{ random_word.text }}</a></p>
 			<p class="text-base font-mono text-gray-400 italic">({{ random_word.lexical }})</p>
 			<p class="text-base font-mono text-yellow-200">{{ random_word.definition }}</p>
 		</div>
@@ -43,13 +43,13 @@
 	</div>
 	<div class="col">
 		<div class="content-block bg-white rounded-sm">
-			<h2 class="text-xl uppercase text-yellow-600 font-semibold">Quote</h2>
+			<h2 class="text-xl uppercase text-yellow-800 font-semibold">Quote</h2>
 			<div id="quote-loader" class="loader"></div>
 			<div id="quote" class="note"></div>
 			<div id="quote-author"></div>
 		</div>
 		<div class="content-block bg-white rounded-sm">
-			<h2 class="text-xl uppercase text-yellow-600 font-semibold">Today I Learned</h2>
+			<h2 class="text-xl uppercase text-yellow-800 font-semibold">Today I Learned</h2>
 			<div id="til-loader" class="loader"></div>
 			<div id="til" class="note"></div>
 			<div id="til-source"></div>
@@ -117,7 +117,7 @@
 			}
 		});
 
-		// $(".word-preview").click((e) => {
+		// $(".word-link").click((e) => {
 		// 	let word = e.target.parentElement.firstChild.textContent;
 		// 	$("#remove-word").data("word", word);
 		// 	$("#edit-word").attr("href", `/edit/${word}`);

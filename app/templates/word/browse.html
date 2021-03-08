@@ -1,21 +1,28 @@
 {% extends "layout.html" %} {% block title %} Your Words {% endblock %} {% block main %}
 <div class="page-header"><h1>Your Vocabulary</h1></div>
 <div class="text-white p-5 grid grid-cols-1 md:grid-cols-3">
-	<div class="col">
-		<div class="content-block">
-			<!-- <h2 class="text-xl uppercase">Recently Added</h2> -->
-			{% if total_words == 0 %}
-			<p class="text-yellow-200 mt-2">Oops, you do not have any vocabulary to review.<br />Please add one to start.</p>
-			{% else %}
-			<ul>
-				{% for w in words %}
-				<li id="word_{{ w.text }}" class="font-mono my-1 text-yellow-300 text-lg word">
-					<span class="word-preview"><a href="sense/{{ w.text | trim }}">{{ w.text }}</a></span>
-				</li>
-				{% endfor %}
-			</ul>
-			{% endif %}
-		</div>
+	{% if total_words == 0 %}
+	<p class="text-pink-400 mt-2 text-center text-xl">Oops, you do not have any vocabulary to review.<br />Please <a href="/word/add">add one</a> to start.</p>
+	{% endif %} {% for col in cols %}
+	<div class="col my-0 py-0 pl-12">
+		<!-- <h2 class="text-xl uppercase">Recently Added</h2> -->
+		{% if col | length > 0 %}
+		<ul>
+			{% for w in col %}
+			<li id="word_{{ w.text }}" class="font-mono my-4 text-yellow-200 text-xl word">
+				<span class="word-link"><a href="/sense/{{ w.text | trim }}">{{ w.text }}</a></span>
+			</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
 	</div>
+	{% endfor %}
+</div>
+<div class="container mx-auto text-center mt-12 border-0 border-none pagination">
+	{% if prev_url %}
+	<a href="{{ prev_url }}"><span class="material-icons text-4xl border-none border-0">arrow_back_ios</span></a>
+	{% endif %} {% if next_url %}
+	<a href="{{ next_url }}"><span class="material-icons text-4xl border-none border-0">arrow_forward_ios</span></a>
+	{% endif %}
 </div>
 {% endblock %}
