@@ -10,7 +10,7 @@ bp = Blueprint('profile', __name__)
 
 
 class AccountForm(Form):
-    current_password = PasswordField('Repeat Password')
+    current_password = PasswordField('Current Password')
     new_password = PasswordField('Password', [
         validators.DataRequired(),
         validators.EqualTo('confirmation', message='Passwords must match')

@@ -28,7 +28,7 @@ class EditWordForm(Form):
 def browse(page=1):
     # Pagination
     words = current_user.words.order_by(
-        'text').paginate(page, per_page=60)
+        'text').paginate(page, per_page=30)
     next_url = url_for('word.browse', page=words.next_num) \
         if words.has_next else None
     prev_url = url_for('word.browse', page=words.prev_num) \
