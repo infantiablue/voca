@@ -22,7 +22,7 @@ def app():
     # create the app with common test config
     # app = create_app({"TESTING": True, "DATABASE": db_path})
     from shutil import copyfile
-    copyfile(f'{PWD}/backup/voca.db', f'{PWD}/tests/test.db')
+    copyfile(f'{PWD}/tests/database/voca.db', f'{PWD}/tests/test.db')
     app = create_app()
     # app.config
     app.config.from_object(config.TestingConfig)
