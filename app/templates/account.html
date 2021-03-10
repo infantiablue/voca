@@ -4,9 +4,8 @@
 	<div class="flex-1">
 		<div class="flex items-center justify-center">
 			{% from "helpers/_form.html" import render_field %}
-			<form class="w-2/4" action="/join" method="post">
+			<form class="w-2/4" action="/account" method="post">
 				<h2 class="text-yellow-200 text-lg uppercase font-semibold my-2">Update Password</h2>
-
 				{{ render_field(form.current_password) }} {{ render_field(form.new_password) }} {{ render_field(form.confirmation) }}
 				<button class="btn" type="submit">Update</button>
 			</form>

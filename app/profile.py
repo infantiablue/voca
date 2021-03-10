@@ -2,7 +2,7 @@ import json
 from flask import Blueprint, render_template, request, flash, redirect
 from flask_login import login_required, current_user
 from sqlalchemy.sql.expression import func
-from .models import db
+from .models import db, User
 from wtforms import Form, PasswordField, validators
 from werkzeug.security import check_password_hash, generate_password_hash
 from .word import AddWordForm
@@ -11,9 +11,10 @@ bp = Blueprint('profile', __name__)
 
 class AccountForm(Form):
     current_password = PasswordField('Current Password')
-    new_password = PasswordField('Password', [
+    new_password = PasswordField('New Password', [
+        validators.Length(min=4, max=25),
         validators.DataRequired(),
-        validators.EqualTo('confirmation', message='Passwords must match')
+        validators.EqualTo('confirmation', message='Passwords must match.')
     ])
     confirmation = PasswordField('Repeat Password')
 
@@ -43,14 +44,16 @@ def dashboard():
 @ login_required
 def account():
     form = AccountForm(request.form)
-
     if request.method == "POST" and form.validate():
         # Ensure username exists and password is correct
-        if not check_password_hash(current_user.hash, form.current_password):
+        # User.query.filter_by(username=form.username.data).first()
+        # print(current_user.hash)
+        if not check_password_hash(current_user.hash, form.current_password.data):
+            flash('Incorrect current password.', category="error")
             return redirect('/account')
         else:
             current_user.hash = generate_password_hash(
-                form.new_password)
+                form.new_password.data)
             db.session.commit()
             flash('Changed password successfully.', category="success")
             return redirect('/dashboard')

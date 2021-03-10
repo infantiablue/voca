@@ -2,7 +2,6 @@
 import requests
 import os
 import json
-# import app
 from flask_login import current_user, login_required
 from flask import Blueprint, render_template, request, redirect, jsonify, flash, abort, current_app, url_for
 from wtforms import Form, StringField, TextAreaField, validators
@@ -28,7 +27,7 @@ class EditWordForm(Form):
 def browse(page=1):
     # Pagination
     words = current_user.words.order_by(
-        'text').paginate(page, per_page=30)
+        'text').paginate(page, per_page=current_app.config['WORDS_PER_PAGE'])
     next_url = url_for('word.browse', page=words.next_num) \
         if words.has_next else None
     prev_url = url_for('word.browse', page=words.prev_num) \
@@ -123,6 +122,7 @@ def edit(word):
                             user_id=current_user.id, word_id=w.id)
             db.session.add(new_note)
         db.session.commit()
+        flash("Updated note successfully.", category="success")
         return redirect(f'/edit/{word}')
     else:
         if(note):
@@ -132,18 +132,18 @@ def edit(word):
     abort(404)
 
 
-@ bp.route('/word/remove', methods=['POST'])
-@ login_required
+@bp.route('/word/remove', methods=['POST'])
+@login_required
 def remove():
     word = request.form['word']
     w = Word.query.filter_by(text=word).first()
     current_user.words.remove(w)
     db.session.commit()
-    flash("The word has been removed successfully", category="success")
+    flash("The word has been removed successfully.", category="success")
     return jsonify({'message': "success"})
 
 
-@ bp.route('/api/lookup/<word>')
+@bp.route('/api/lookup/<word>')
 @ login_required
 def lookup(word):
     word = word.lower()
@@ -158,8 +158,8 @@ def lookup(word):
         fields = 'definitions%2Cexamples'  # TODO: escape URL
         strictMatch = 'false'
 
-        url = 'https://od-api.oxforddictionaries.com:443/api/v2/entries/' + language + \
-            '/' + word + '?fields=' + fields + '&strictMatch=' + strictMatch
+        url = 'https://od-api.oxforddictionaries.com:443/api/v2/entries/' + \
+            language + '/' + word + '?fields=' + fields + '&strictMatch=' + strictMatch
 
         r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
         if (r.status_code == 200):
@@ -174,7 +174,7 @@ def lookup(word):
                         t['lexical'] = l["lexicalCategory"]["text"].lower()
                         t['entry'] = []
                         if 'entries' not in l:
-                            return {}
+                            return {}, 404
                         for e in l['entries']:
                             for s in e['senses']:
                                 m = []
@@ -191,8 +191,8 @@ def lookup(word):
                     json.dump(w, outfile)
                 return(jsonify(w))
             else:
-                return {}
+                return {}, 404
         else:
             current_app.logger.error(
                 f'API credential issue with HTTP CODE {r.status_code} ID {app_id} and KEY {app_key}')
-            return {}
+            return {}, r.status_code

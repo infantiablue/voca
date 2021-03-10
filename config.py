@@ -5,10 +5,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config(object):
     DEBUG = False
     TESTING = False
-    CSRF_ENABLED = True
+    WTF_CSRF_ENABLED = True
     SECRET_KEY = os.environ.get('SECRET')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    WORDS_PER_PAGE = 30
 
 
 class ProductionConfig(Config):
@@ -28,3 +29,11 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
+    DEBUG = True
+    DEBUG_TB_ENABLED = False
+    WORDS_PER_PAGE = 5
+    # SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///../tests/test.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    CACHE_TYPE = 'null'
+    WTF_CSRF_ENABLED = False
