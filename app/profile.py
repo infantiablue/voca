@@ -46,8 +46,6 @@ def account():
     form = AccountForm(request.form)
     if request.method == "POST" and form.validate():
         # Ensure username exists and password is correct
-        # User.query.filter_by(username=form.username.data).first()
-        # print(current_user.hash)
         if not check_password_hash(current_user.hash, form.current_password.data):
             flash('Incorrect current password.', category="error")
             return redirect('/account')

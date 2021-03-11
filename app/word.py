@@ -35,6 +35,7 @@ def browse(page=1):
     total_words = current_user.words.count()
     base_num = int(total_words/3)
     remainder = total_words % 3
+    # TODO: if 30 items?
     col1_n = col2_n = col3_n = base_num
     if remainder == 1:
         col1_n += 1

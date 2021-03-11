@@ -1,0 +1,32 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.8
+
+    working_directory: ~/voca
+
+    steps:
+      # Step 1: obtain repo from GitHub
+      - checkout
+      # Step 2: create virtual env and install dependencies
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv .env
+            source .env/bin/activate
+            pip install -r requirements.txt
+      # Step 3: run linter and tests
+      - run:
+          name: run tests
+          command: |
+            source .env/bin/activate
+            export FLASK_APP=app
+            export FLASK_ENV=production
+            export NODE_ENV=production
+            export SECRET=DQ8RwPU2NIv1st0F
+            export APP_SETTINGS=config.TestConfig
+            export OXFORD_APP_ID=fd0f1799
+            export OXFORD_APP_KEY=b07f95f839de63b54d400c2f023658d3
+            export APP_PWD="~/voca"            
+            pytest -cov
