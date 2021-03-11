@@ -1,5 +1,6 @@
 {% extends "layout.html" %} {% block title %} Your Words {% endblock %} {% block main %}
 <div class="page-header"><h1>Your Vocabulary</h1></div>
+<div class="text-left text-white ml-16">Sort by <a href="/words/browse?sort=time">Time</a> | <a href="/words/browse">Alphabet</a></div>
 <div class="text-white p-5 grid grid-cols-1 md:grid-cols-3">
 	{% if total_words == 0 %}
 	<p class="text-pink-400 mt-2 text-center text-xl">Oops, you do not have any vocabulary to review.<br />Please <a href="/word/add">add one</a> to start.</p>

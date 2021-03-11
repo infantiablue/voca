@@ -4,6 +4,7 @@ import json
 from flask_login import current_user, login_required
 from flask import Blueprint, render_template, request, redirect, jsonify, flash, abort, current_app, url_for
 from wtforms import Form, StringField, TextAreaField, validators
+from sqlalchemy import desc
 from .models import db, Word, Note
 
 bp = Blueprint('word', __name__)
@@ -24,12 +25,19 @@ class EditWordForm(Form):
 @bp.route('/words/browse')
 @login_required
 def browse(page=1):
+    sort = request.args.get('sort')
+    print(sort)
     # Pagination
-    words = current_user.words.order_by(
-        'text').paginate(page, per_page=current_app.config['WORDS_PER_PAGE'])
-    next_url = url_for('word.browse', page=words.next_num) \
+    words = ""
+    if sort == 'time':
+        words = current_user.words.order_by(
+            desc('timestamp')).paginate(page, per_page=current_app.config['WORDS_PER_PAGE'])
+    else:
+        words = current_user.words.order_by(
+            'text').paginate(page, per_page=current_app.config['WORDS_PER_PAGE'])
+    next_url = url_for('word.browse', page=words.next_num, sort=sort) \
         if words.has_next else None
-    prev_url = url_for('word.browse', page=words.prev_num) \
+    prev_url = url_for('word.browse', page=words.prev_num, sort=sort) \
         if words.has_prev else None
     total_words = current_user.words.count()
     base_num = int(total_words/3)
