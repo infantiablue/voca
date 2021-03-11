@@ -1,7 +1,7 @@
 matrix:
   include:
     - before_script:
-        - "sudo npm install --global yarn postcss postcss-cli"
+        - "npm install --global yarn postcss postcss-cli"
       language: node
       node: 12.21.0
       script: yarn
@@ -20,6 +20,6 @@ matrix:
       python: 3.8
       script: pytest --cov # run tests
     - after_success:
-      language: bash
+      language: shell
       script: bash <(curl -s https://codecov.io/bash) # submit coverage
 sudo: required
