@@ -2,12 +2,11 @@
 
 ## Development Status
 
-[![CircleCI](https://circleci.com/gh/infantiablue/voca.svg?style=svg)](https://circleci.com/gh/infantiablue/voca) [![codecov.io](https://codecov.io/github/infantiablue/voca/coverage.svg?branch=main)](https://codecov.io/github/infantiablue/voca?branch=main)
+[![CircleCI](https://circleci.com/gh/infantiablue/voca.svg?style=svg)](https://circleci.com/gh/infantiablue/voca) [![Build Status](https://travis-ci.com/infantiablue/voca.svg?branch=main)](https://travis-ci.com/infantiablue/voca) [![codecov.io](https://codecov.io/github/infantiablue/voca/coverage.svg?branch=main)](https://codecov.io/github/infantiablue/voca?branch=main) 
 
 ## Video Demo
 
 ## Description
-
 
 As a non-English speaker, I need to learn new vocabulary consecutively. Before CS50, I usually use Apple Notes to save and review new words. However, it's not really an intuitive way to build vocabulary base.
 Then, I tried to find some mobile apps for this purpose, yet almost the app I found is focus on flash card base, which means provide users new and random words to memorize. It's not really what I want for my personal pupose.
