@@ -5,12 +5,12 @@ matrix:
       node_js: 12.21.0
       before_script:
         - "npm install --global yarn postcss postcss-cli"
-        - cd $HOME
+        - cd infantiablue/voca
       script: yarn
     - language: python
       python: 3.8
       before_script:
-        - cd $HOME
+        - cd infantiablue/voca
         - "npm install --global yarn postcss postcss-cli"
         - "pip install -r requirements.txt"
         - "export FLASK_APP=$TRAVIS_BUILD_DIR"
