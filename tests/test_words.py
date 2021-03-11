@@ -50,7 +50,7 @@ def test_add_word(app, client, auth):
         with app.app_context():
             word = current_user.words.filter_by(text='apple').first()
             assert word is not None
-    os.remove(f'{os.environ.get("APP_PWD")}/cache/apple.json')
+    os.remove(f'{os.getcwd()}/cache/apple.json')
 
 
 def test_add_duplicated_word(client, auth):

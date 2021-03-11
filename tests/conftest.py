@@ -17,7 +17,6 @@ from app.models import db
 def app():
     # PWD = os.environ.get('APP_PWD')
     PWD = os.path.dirname(os.path.realpath(__file__))
-    print(PWD)
     """Create and configure a new app instance for each test."""
     # create a temporary file to isolate the database for each test
     # db_fd, db_path = tempfile.mkstemp()
