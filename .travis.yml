@@ -1,3 +1,4 @@
+dist: bionic
 sudo: required
 matrix:
   include:
@@ -6,6 +7,9 @@ matrix:
       before_script:
         - "npm install --global yarn postcss postcss-cli"
         - cd infantiablue/voca
+      cache:
+        directories:
+          - "node_modules"
       script: yarn
     - language: python
       python: 3.8
@@ -21,6 +25,7 @@ matrix:
         - "export OXFORD_APP_ID=fd0f1799"
         - "export OXFORD_APP_KEY=b07f95f839de63b54d400c2f023658d3"
         - "export CODECOV_TOKEN=2b2b0d17-7fae-4cfe-88ae-cabc92a86526"
+      cache: pip
       script: nosetests
     - after_success:
         - pytest --cov # run tests
