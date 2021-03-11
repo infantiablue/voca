@@ -14,6 +14,7 @@ matrix:
       python: 3.8
       before_script:
         - "npm install --global yarn postcss postcss-cli"
+        - "yarn"
         - "pip install -r requirements.txt"
         - "export FLASK_APP=$TRAVIS_BUILD_DIR"
         - "export FLASK_ENV=production"
@@ -24,9 +25,8 @@ matrix:
         - "export OXFORD_APP_KEY=b07f95f839de63b54d400c2f023658d3"
         - "export CODECOV_TOKEN=2b2b0d17-7fae-4cfe-88ae-cabc92a86526"
       cache: pip
-      script: nosetests
+      script: pytest --cov # run tests
     - after_success:
-        - pytest --cov # run tests
       language: shell
       script:
         - bash <(curl -s https://codecov.io/bash) # submit coverage
