@@ -1,6 +1,10 @@
 matrix:
   include:
-
+    - before_script:
+        - "npm install --global yarn postcss postcss-cli"
+      language: node
+      node: 12.21.0
+      script: yarn
     - before_script:
         - "pip install -r requirements.txt"
         - "export FLASK_APP=$TRAVIS_BUILD_DIR"
@@ -14,13 +18,10 @@ matrix:
       cache: pip
       language: python
       python: 3.8
-      - before_script:
-          - "npm install --global yarn postcss postcss-cli"
-        language: node
-        node: 12.21.0
-        script: yarn      
-      script: pytest --cov # run tests
+      script: nosetests
     - after_success:
+        - pytest --cov # run tests
       language: shell
-      script: bash <(curl -s https://codecov.io/bash) # submit coverage
+      script:
+        - bash <(curl -s https://codecov.io/bash) # submit coverage
 sudo: required
