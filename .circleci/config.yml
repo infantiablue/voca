@@ -28,5 +28,5 @@ jobs:
             export APP_SETTINGS=config.TestingConfig
             export OXFORD_APP_ID=fd0f1799
             export OXFORD_APP_KEY=b07f95f839de63b54d400c2f023658d3
-            export APP_PWD="~/voca"            
+            export APP_PWD=~/voca
             pytest -cov

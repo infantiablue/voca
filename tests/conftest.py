@@ -15,14 +15,16 @@ from app.models import db
 
 @pytest.fixture
 def app():
-    PWD = os.environ.get('APP_PWD')
+    # PWD = os.environ.get('APP_PWD')
+    PWD = os.path.dirname(os.path.realpath(__file__))
+    print(PWD)
     """Create and configure a new app instance for each test."""
     # create a temporary file to isolate the database for each test
     # db_fd, db_path = tempfile.mkstemp()
     # create the app with common test config
     # app = create_app({"TESTING": True, "DATABASE": db_path})
     from shutil import copyfile
-    copyfile(f'{PWD}/tests/database/voca.db', f'{PWD}/tests/test.db')
+    copyfile(f'{PWD}/database/voca.db', f'{PWD}/test.db')
     app = create_app()
     # app.config
     app.config.from_object(config.TestingConfig)
@@ -31,7 +33,7 @@ def app():
         db.init_app(app)
 
     yield app
-    os.remove(f'{PWD}/tests/test.db')
+    os.remove(f'{PWD}/test.db')
 
 
 @pytest.fixture
