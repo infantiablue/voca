@@ -1,8 +1,8 @@
 # Vocabulary Keeper
 
-[![CircleCI](https://circleci.com/gh/infantiablue/voca.svg?style=svg)](https://circleci.com/gh/infantiablue/voca)
+## Development Status
 
-[![codecov.io](https://codecov.io/github/infantiablue/voca/coverage.svg?branch=main)](https://codecov.io/github/infantiablue/voca?branch=main)
+[![CircleCI](https://circleci.com/gh/infantiablue/voca.svg?style=svg)](https://circleci.com/gh/infantiablue/voca) [![codecov.io](https://codecov.io/github/infantiablue/voca/coverage.svg?branch=main)](https://codecov.io/github/infantiablue/voca?branch=main)
 
 ## Video Demo
 
