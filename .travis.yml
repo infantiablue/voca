@@ -2,17 +2,10 @@ dist: bionic
 sudo: required
 matrix:
   include:
-    - language: node_js
-      node_js: 12.21.0
-      before_script:
-        - "npm install --global yarn postcss postcss-cli"
-      cache:
-        directories:
-          - "node_modules"
-      script: yarn
     - language: python
       python: 3.8
       before_script:
+        - "nvm install 12.21.0"
         - "npm install --global yarn postcss postcss-cli"
         - "yarn"
         - "pip install -r requirements.txt"
