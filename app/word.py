@@ -1,4 +1,3 @@
-# from flask.globals import current_app
 import requests
 import os
 import json
@@ -74,6 +73,7 @@ def sense(word):
                 data = json.load(json_file)
         except FileNotFoundError:
             flash("An error has been occured.", category="error")
+            return redirect('/dashboard')
         return render_template('word/sense.html', data=data, word=word, note=note_text)
     else:
         abort(404)
@@ -96,11 +96,15 @@ def add():
             else:
                 flash("This word is duplicated.", category="error")
                 return redirect(f'/sense/{input_word}')
+
         # Add new word to the database
-        db.session.commit()
-
-        flash("A new word has been added.", category="success")
-
+        if os.path.exists(f'{os.getcwd()}/cache/{input_word}.json'):
+            db.session.commit()
+            flash('A new word has been added.', category='success')
+        else:
+            current_user.words.remove(new_word)
+            flash('The word has not been defined.', category='error')
+            return redirect('/word/add')
         # Redirect user to new word page
         return redirect(f'/sense/{input_word}')
     return render_template('word/add.html', form=form)

@@ -25,7 +25,7 @@ Some details about technical statck:
 - SQLAlchemy with Flask-Migrate.
 - Postgres for production and SQLite for testing purpose.
 - Deployed on Google Compute Engine, with gUnicorn as WSGI, and nginx as reserved proxy server
-- There is a test suite which reach 91% code coverage.
 - Tailwind CSS framework for user interface.
+- CI configuration with CircleCI, Travis and CodeCov
 
 [Live site](https://voca.techika.com)
