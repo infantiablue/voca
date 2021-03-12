@@ -3,7 +3,6 @@ from flask_login import login_manager, login_required, logout_user, LoginManager
 from wtforms import Form, StringField, PasswordField, validators
 from wtforms.validators import ValidationError
 from .models import db, User
-# from .utils import is_safe_url
 from werkzeug.security import check_password_hash, generate_password_hash
 
 # initialize login manager
@@ -33,6 +32,7 @@ class RegistrationForm(Form):
     ])
     email = StringField('Email Address', [
         validators.Length(min=6, max=35),
+        validators.Email(),
         unique_email
     ])
     password = PasswordField('Password', [

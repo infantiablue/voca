@@ -4,8 +4,12 @@ import json
 from flask_login import current_user, login_required
 from flask import Blueprint, render_template, request, redirect, jsonify, flash, abort, current_app, url_for
 from wtforms import Form, StringField, TextAreaField, validators
+from flask_wtf import FlaskForm
+from werkzeug.utils import secure_filename
+from flask_wtf.file import FileField, FileAllowed
 from sqlalchemy import desc
-from .models import db, Word, Note
+from .models import db, Word, Note, Media
+import uuid
 
 bp = Blueprint('word', __name__)
 
@@ -17,7 +21,16 @@ class AddWordForm(Form):
     ])
 
 
-class EditWordForm(Form):
+class SearchForm(Form):
+    query = StringField('Query', [
+        validators.DataRequired(),
+        validators.Length(min=3, max=30),
+    ])
+
+
+class EditWordForm(FlaskForm):
+    image = FileField('Image', validators=[
+                      FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
     note = TextAreaField('Note', [])
 
 
@@ -69,6 +82,8 @@ def browse(page=1):
 def sense(word):
     w = current_user.words.filter_by(text=word.lower()).first()
     if w:
+        media = Media.query.filter_by(
+            user_id=current_user.id, word_id=current_user.words.filter_by(text=word).first().id).first()
         note = Note.query.filter_by(
             user_id=current_user.id, word_id=current_user.words.filter_by(text=word).first().id).first()
         note_text = ''
@@ -82,7 +97,7 @@ def sense(word):
         except FileNotFoundError:
             flash("An error has been occured.", category="error")
             return redirect('/dashboard')
-        return render_template('word/sense.html', data=data, word=word, note=note_text)
+        return render_template('word/sense.html', data=data, word=word, note=note_text, media=media)
     else:
         abort(404)
 
@@ -118,16 +133,68 @@ def add():
     return render_template('word/add.html', form=form)
 
 
+@ bp.route('/search', methods=['GET', 'POST'])
+@ login_required
+def search():
+    form = SearchForm(request.form)
+    result = []
+    if request.method == 'POST' and form.validate():
+        words = current_user.words.filter(
+            Word.text.like(f'{form.query.data}%')).all()
+        if words:
+            for w in words:
+                try:
+                    i = {}
+                    i['text'] = w.text
+                    with open(f'cache/{w.text}.json') as json_file:
+                        data = json.load(json_file)
+                        i['definition'] = data[0]['sense'][0]['entry'][0]['definition']
+                        i['lexical'] = data[0]['sense'][0]['lexical']
+                        result.append(i)
+                except FileNotFoundError:
+                    result = None
+    return render_template('word/search.html', form=form, result=result)
+
+
 @ bp.route('/edit/<word>', methods=['GET', 'POST'])
 @ login_required
 def edit(word):
-    form = EditWordForm(request.form)
-
+    form = EditWordForm()
     if (word):
         w = current_user.words.filter_by(text=word).first()
         note = Note.query.filter_by(
             user_id=current_user.id, word_id=w.id).first()
     if request.method == 'POST' and form.validate():
+        assets_dir = os.path.join(os.path.dirname(
+            current_app.instance_path), 'assets')
+        img = form.image.data
+        if img:
+            uuid_folder = uuid.uuid4().hex
+            if os.path.exists(os.path.join(assets_dir, uuid_folder)):
+                uuid_folder = uuid.uuid4().hex
+            filename = secure_filename(img.filename)
+            os.mkdir(os.path.join(assets_dir, uuid_folder))
+            img_path = os.path.join(assets_dir, uuid_folder, filename)
+            img.save(img_path)
+
+            from PIL import Image
+            fn, ext = os.path.splitext(img_path)
+            fn = fn.split('/')[-1]
+            image = Image.open(img_path)
+            image.thumbnail((400, 400))
+            image.save(os.path.join(
+                assets_dir, uuid_folder, f'{fn}.thumb{ext}'), quality=100)
+            img_url = f'{uuid_folder}/{fn}.thumb{ext}'
+            media = Media.query.filter_by(
+                user_id=current_user.id, word_id=current_user.words.filter_by(text=word).first().id).first()
+            if media:
+                media.url = img_url
+            else:
+                media = Media(url=img_url,
+                              kind='img', user_id=current_user.id, word_id=w.id)
+                db.session.add(media)
+            db.session.commit()
+            flash('Image uploaded successfully.', category='success')
         if note:
             note.text = form.note.data
         else:
@@ -135,7 +202,7 @@ def edit(word):
                             user_id=current_user.id, word_id=w.id)
             db.session.add(new_note)
         db.session.commit()
-        flash("Updated note successfully.", category="success")
+        flash('Updated note successfully.', category='success')
         return redirect(f'/edit/{word}')
     else:
         if(note):
@@ -159,6 +226,7 @@ def remove():
 @bp.route('/api/lookup/<word>')
 @ login_required
 def lookup(word):
+    # TODO: test UPON word
     word = word.lower()
     try:
         with open(f'cache/{word}.json') as json_file:
@@ -194,9 +262,10 @@ def lookup(word):
                                 if 'examples' in s:
                                     for ex in s['examples']:
                                         m.append(ex)
-                                for d in s['definitions']:
-                                    t['entry'].append(
-                                        {'definition': d, 'examples': m})
+                                if 'defintitions' in s:
+                                    for d in s['definitions']:
+                                        t['entry'].append(
+                                            {'definition': d, 'examples': m})
 
                         res.append(t)
                     w.append({'sense': res})

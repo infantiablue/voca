@@ -1,10 +1,11 @@
 import os
 import logging
 from logging import FileHandler, Formatter
-from flask import Flask, redirect, render_template
+from flask import Flask, redirect, render_template, send_from_directory
 from flask_assets import Environment, Bundle
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
+# from flask_wtf.csrf import CSRFProtect
 from app import auth, profile, word
 from .models import db
 
@@ -14,8 +15,11 @@ def create_app():
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(os.environ.get('APP_SETTINGS'))
 
+    # Enable CSRF protection
+    # csrf = CSRFProtect()
+    # csrf.init_app(app)
+
     # Logging
-    # if not app.debug:
     logging.basicConfig(level=logging.WARNING)
     file_handler = FileHandler('./logs/app.log')
     app.logger.addHandler(file_handler)
@@ -61,6 +65,10 @@ def create_app():
     # @login_required
     def index():
         return redirect('/dashboard')
+
+    @app.route('/media/<path:path>')
+    def serve_media(path):
+        return send_from_directory('../assets', path)
 
     return app
 

@@ -5,7 +5,7 @@ from sqlalchemy.sql.expression import func
 from .models import db, User
 from wtforms import Form, PasswordField, validators
 from werkzeug.security import check_password_hash, generate_password_hash
-from .word import AddWordForm
+from .word import AddWordForm, SearchForm
 bp = Blueprint('profile', __name__)
 
 
@@ -23,6 +23,7 @@ class AccountForm(Form):
 @login_required
 def dashboard():
     addword_form = AddWordForm()
+    search_form = SearchForm()
     words = current_user.words.limit(10).all()
     total_words = current_user.words.count()
     random_word = {}
@@ -37,7 +38,7 @@ def dashboard():
                 random_word['lexical'] = data[0]['sense'][0]['lexical']
         except FileNotFoundError:
             random_word = None
-    return render_template('dashboard.html', words=words, random_word=random_word, addword_form=addword_form, total_words=total_words)
+    return render_template('dashboard.html', words=words, random_word=random_word, addword_form=addword_form, search_form=search_form, total_words=total_words)
 
 
 @ bp.route('/account', methods=['GET', 'POST'])

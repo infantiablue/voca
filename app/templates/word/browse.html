@@ -6,7 +6,6 @@
 	<p class="text-pink-400 mt-2 text-center text-xl">Oops, you do not have any vocabulary to review.<br />Please <a href="/word/add">add one</a> to start.</p>
 	{% endif %} {% for col in cols %}
 	<div class="col my-0 py-0 pl-12">
-		<!-- <h2 class="text-xl uppercase">Recently Added</h2> -->
 		{% if col | length > 0 %}
 		<ul>
 			{% for w in col %}

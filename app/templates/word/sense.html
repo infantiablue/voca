@@ -1,4 +1,4 @@
-{% extends "layout.html" %} {% block title %} {{word}} - Definitions {% endblock %} {% block main %}
+{% extends "layout.html" %} {% block title %} {{ word }} - Definitions {% endblock %} {% block main %}
 <div class="page-header"></div>
 <div class="container">
 	<div class="grid grid-cols-1 p-3 md:grid-cols-3">
@@ -25,14 +25,21 @@
 			</div>
 		</div>
 		<div class="col">
-			{% if note %}
+			{% if not note and not media %}
+			<div class="content-block bg-white rounded-sm">
+				<p class="text-center"><a class="bgw" href="/edit/{{ word }}">Add your note and/or illustrated image</a><br />to help you memorize faster and longer.</p>
+			</div>
+			{% endif %} {% if note %}
 			<div class="content-block bg-white rounded-sm">
 				<h2 class="text-xl uppercase text-yellow-900 font-semibold">Note</h2>
 				<p class="note text-black text-lg font-light">{{ note |safe }}</p>
 			</div>
 			{% endif %} {% if media %}
-			<div class="content-block">
-				<h2 class="text-xl uppercase text-white">Media</h2>
+			<div class="content-block bg-white rounded-sm">
+				<h2 class="text-xl uppercase text-yellow-900 font-semibold">Visualiazation</h2>
+				<div class="text-center">
+					<img alt="Illustration for {{ word }}" src="/media/{{ media.url }}" />
+				</div>
 			</div>
 			{% endif %}
 		</div>

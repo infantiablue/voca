@@ -2,6 +2,18 @@
 <div class="page-header"></div>
 <div class="text-white p-5 grid grid-cols-1 md:grid-cols-3">
 	<div class="col">
+		{% if total_words > 0 %}
+		<div class="content-block">
+			<h2 class="text-xl uppercase">Search</h2>
+			{% from "helpers/_form.html" import render_field %}
+			<div class="w-full font-semibold font-mono">
+				<form class="flex text-black" action="/search" method="post">
+					{{ render_field(search_form.query) }}
+					<button class="flex-shrink btn h-full ml-2 self-center" type="submit">Submit</button>
+				</form>
+			</div>
+		</div>
+		{% endif %}
 		<div class="content-block">
 			<h2 class="text-xl uppercase">Recently Added</h2>
 			{% if total_words == 0 %}
@@ -35,9 +47,9 @@
 		<div class="content-block">
 			<h2 class="text-xl uppercase">Add new word</h2>
 			{% from "helpers/_form.html" import render_field %}
-			<div class="w-full">
-				<form id="new-word-form" class="text-black font-semibold font-mono" action="/word/add" method="post">{{ render_field(addword_form.word) }}</form>
-				<button id="submit" class="btn" type="submit">Submit</button>
+			<div class="w-full font-semibold font-mono flex">
+				<form id="new-word-form" class="flex-shrink text-black" action="/word/add" method="post">{{ render_field(addword_form.word) }}</form>
+				<button id="submit" class="flex-shrink btn h-full ml-2 self-center" type="submit">Submit</button>
 			</div>
 		</div>
 	</div>
@@ -80,7 +92,7 @@
 </div> -->
 <div class="modal opacity-0 pointer-events-none absolute w-full h-full top-0 left-0 flex items-center justify-center">
 	<div class="modal-overlay absolute w-full h-full bg-black opacity-75 top-0 left-0 cursor-pointer"></div>
-	<div class="p-6 mt-16 absolute w-1/2 h-1/2 max-h-full bg-gray-100 rounded-sm shadow-lg overflow-y-scroll">
+	<div class="p-6 mt-16 absolute w-2/3 h-2/3 max-h-full bg-gray-100 rounded-sm shadow-lg overflow-y-scroll">
 		<div id="modal-header" class="flex items-center justify-between flex-wrap pt-2">
 			<div class="flex-grow lg:flex lg:items-center lg:justify-center lg:w-auto">
 				<button id="confirm" class="btn mr-4">Confirm</button>
@@ -145,7 +157,7 @@
 		});
 
 		$("#submit").click((e) => {
-			preview($("input").val());
+			preview($("#new-word-form input").val());
 		});
 
 		$("#confirm").click(() => {

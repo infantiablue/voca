@@ -1,0 +1,28 @@
+{% extends "layout.html" %} {% block title %} Search {% endblock %} {% block main %}
+<div class="page-header"><h1>Search</h1></div>
+<div class="flex flex-auto">
+	<div class="flex-1">
+		<div class="flex items-center justify-center">
+			{% from "helpers/_form.html" import render_field %}
+			<div class="w-2/4">
+				<form class="text-black font-semibold font-mono" action="/search" method="post">
+					{{ form.csrf_token }} {{ render_field(form.query) }}
+					<button id="submit" class="btn" type="submit">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% if result %}
+<div class="container mx-auto">
+	<div class="content-block">
+		{% for word in result %}
+		<div class="mb-5">
+			<p class="text-xl font-mono text-yellow-400 font-semibold italic word word-link"><a href="/sense/{{ word.text }}">{{ word.text }}</a></p>
+			<p class="text-base font-mono text-gray-400 italic">({{ word.lexical }})</p>
+			<p class="text-base font-mono text-yellow-200">{{ word.definition }}</p>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endif %} {% endblock%}

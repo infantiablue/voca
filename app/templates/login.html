@@ -5,7 +5,7 @@
 		<div class="flex items-center justify-center">
 			{% from "helpers/_form.html" import render_field %}
 			<form class="w-2/4" action="/login" method="post">
-				{{ render_field(form.username) }} {{ render_field(form.password) }}
+				{{ form.csrf_token }} {{ render_field(form.username) }} {{ render_field(form.password) }}
 				<button class="btn" type="submit">Enter</button>
 			</form>
 		</div>

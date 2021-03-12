@@ -9,7 +9,9 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    MAX_CONTENT_LENGTH = 2 * 1024 * 1024
     WORDS_PER_PAGE = 30
+    SESSION_COOKIE_SECURE = True
 
 
 class ProductionConfig(Config):
@@ -25,6 +27,7 @@ class DevelopmentConfig(Config):
     TEMPLATES_AUTO_RELOAD = True
     DEVELOPMENT = True
     DEBUG = True
+    SESSION_COOKIE_SECURE = False
 
 
 class TestingConfig(Config):
@@ -32,7 +35,6 @@ class TestingConfig(Config):
     DEBUG = True
     DEBUG_TB_ENABLED = False
     WORDS_PER_PAGE = 5
-    # SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     SQLALCHEMY_DATABASE_URI = 'sqlite:///../tests/test.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     CACHE_TYPE = 'null'

@@ -5,7 +5,7 @@
 		<div class="flex items-center justify-center">
 			{% from "helpers/_form.html" import render_field %}
 			<div class="w-2/4">
-				<form id="the-form" class="text-black font-semibold font-mono" action="/word/add" method="post">{{ render_field(form.word) }}</form>
+				<form id="the-form" class="text-black font-semibold font-mono" action="/word/add" method="post">{{ form.csrf_token }} {{ render_field(form.word) }}</form>
 				<button id="submit" class="btn" type="submit">Submit</button>
 			</div>
 		</div>
