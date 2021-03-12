@@ -1,0 +1,132 @@
+{
+    "id": "king",
+    "metadata": {
+        "operation": "retrieve",
+        "provider": "Oxford University Press",
+        "schema": "RetrieveEntry"
+    },
+    "results": [
+        {
+            "id": "king",
+            "language": "en-gb",
+            "lexicalEntries": [
+                {
+                    "entries": [
+                        {
+                            "senses": [
+                                {
+                                    "definitions": [
+                                        "the male ruler of an independent state, especially one who inherits the position by right of birth"
+                                    ],
+                                    "examples": [
+                                        {
+                                            "notes": [
+                                                {
+                                                    "text": "as title",
+                                                    "type": "grammaticalNote"
+                                                }
+                                            ],
+                                            "text": "King Henry VIII"
+                                        }
+                                    ],
+                                    "id": "m_en_gbus0549520.006",
+                                    "subsenses": [
+                                        {
+                                            "definitions": [
+                                                "a person or thing regarded as the finest or most important in their sphere or group"
+                                            ],
+                                            "examples": [
+                                                {
+                                                    "text": "a country where football is king"
+                                                },
+                                                {
+                                                    "text": "the king of rock"
+                                                }
+                                            ],
+                                            "id": "m_en_gbus0549520.009"
+                                        },
+                                        {
+                                            "definitions": [
+                                                "(in the UK) the national anthem when there is a male sovereign."
+                                            ],
+                                            "id": "m_en_gbus0549520.010"
+                                        },
+                                        {
+                                            "definitions": [
+                                                "used in names of animals and plants that are particularly large, e.g. king cobra."
+                                            ],
+                                            "id": "m_en_gbus0549520.013"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "definitions": [
+                                        "the most important chess piece, of which each player has one, which the opponent has to checkmate in order to win. The king can move in any direction, including diagonally, to any adjacent square that is not attacked by an opponent"s piece or pawn."
+                                    ],
+                                    "id": "m_en_gbus0549520.019",
+                                    "subsenses": [
+                                        {
+                                            "definitions": [
+                                                "a piece in draughts with extra capacity for moving, made by crowning an ordinary piece that has reached the opponent"s baseline."
+                                            ],
+                                            "id": "m_en_gbus0549520.020"
+                                        },
+                                        {
+                                            "definitions": [
+                                                "a playing card bearing a representation of a king, normally ranking next below an ace."
+                                            ],
+                                            "id": "m_en_gbus0549520.021"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "language": "en-gb",
+                    "lexicalCategory": {
+                        "id": "noun",
+                        "text": "Noun"
+                    },
+                    "text": "king"
+                },
+                {
+                    "entries": [
+                        {
+                            "senses": [
+                                {
+                                    "definitions": [
+                                        "make (someone) king."
+                                    ],
+                                    "id": "m_en_gbus0549520.024"
+                                },
+                                {
+                                    "definitions": [
+                                        "act in an unpleasantly superior and domineering way"
+                                    ],
+                                    "examples": [
+                                        {
+                                            "text": "he"ll start kinging it over the lot of us again"
+                                        },
+                                        {
+                                            "text": "science kings it over the realm of intellectual discourse"
+                                        }
+                                    ],
+                                    "id": "m_en_gbus0549520.031"
+                                }
+                            ]
+                        }
+                    ],
+                    "language": "en-gb",
+                    "lexicalCategory": {
+                        "id": "verb",
+                        "text": "Verb"
+                    },
+                    "text": "king"
+                }
+            ],
+            "type": "headword",
+            "word": "king"
+        }
+    ],
+    "word": "king"
+}

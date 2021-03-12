@@ -245,6 +245,8 @@ def lookup(word):
         r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
         if (r.status_code == 200):
             res = r.json()
+            with open(f'words/{word}.json', 'w') as outfile:
+                json.dump(res, outfile)
             w = []
             # Extracting crucial data from API result
             if 'results' in res:
@@ -262,11 +264,12 @@ def lookup(word):
                                 if 'examples' in s:
                                     for ex in s['examples']:
                                         m.append(ex)
-                                if 'defintitions' in s:
+                                if 'definitions' in s:
                                     for d in s['definitions']:
                                         t['entry'].append(
                                             {'definition': d, 'examples': m})
-
+                                else:
+                                    t['entry'].append({'examples': m})
                         res.append(t)
                     w.append({'sense': res})
                 with open(f'cache/{word}.json', 'w') as outfile:

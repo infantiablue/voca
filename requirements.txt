@@ -6,6 +6,8 @@ certifi==2020.12.5
 chardet==4.0.0
 click==7.1.2
 coverage==5.5
+dnspython==2.1.0
+email-validator==1.1.2
 flake8==3.8.4
 Flask==1.1.2
 Flask-Assets==2.0
@@ -25,6 +27,7 @@ Mako==1.1.4
 MarkupSafe==1.1.1
 mccabe==0.6.1
 packaging==20.9
+Pillow==8.1.2
 pluggy==0.13.1
 psycopg2==2.8.6
 py==1.10.0

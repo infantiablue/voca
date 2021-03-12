@@ -30,9 +30,9 @@ let preview = (word) => {
 					$("#modal-content").append(`<h3 class="text-base text-gray-400 italic font-mono">(${e.lexical})</h3>`);
 					for (let d of e.entry) {
 						$("#modal-content").append(`<p></p>`);
-						$("#modal-content").append(`<p class="font-semibold">${d.definition}</p>`);
+						if (d.definition) $("#modal-content").append(`<p class="font-semibold">${d.definition}</p>`);
 						$("#prevmodal-contentiew").append(`<p></p>`);
-						for (let x of d.examples) $("#modal-content").append(`<p class="italic">- ${x.text} </p>`);
+						for (let x of d.examples) $("#modal-content").append(`<p class="italic">-&nbsp;${x.text} </p>`);
 					}
 					$("#modal-content").append(`<p class="my-2"></p>`);
 				}
