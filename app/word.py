@@ -138,7 +138,9 @@ def add():
 def search():
     form = SearchForm(request.form)
     result = []
+    flag = False
     if request.method == 'POST' and form.validate():
+        flag = True
         words = current_user.words.filter(
             Word.text.like(f'{form.query.data}%')).all()
         if words:
@@ -153,7 +155,7 @@ def search():
                         result.append(i)
                 except FileNotFoundError:
                     result = None
-    return render_template('word/search.html', form=form, result=result)
+    return render_template('word/search.html', form=form, result=result, flag=flag)
 
 
 @ bp.route('/edit/<word>', methods=['GET', 'POST'])

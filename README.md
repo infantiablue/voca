@@ -6,26 +6,35 @@
 
 ## Video Demo
 
+[https://youtu.be/SNaoEnfT36E](https://youtu.be/SNaoEnfT36E)
+
+## Live Demo
+
+[https://voca.techika.com](https://voca.techika.com)
+
 ## Description
 
 As a non-English speaker, I need to learn new vocabulary consecutively. Before CS50, I usually use Apple Notes to save and review new words. However, it's not really an intuitive way to build vocabulary base.
-Then, I tried to find some mobile apps for this purpose, yet almost the app I found is focus on flash card base, which means provide users new and random words to memorize. It's not really what I want for my personal pupose.
-And with the knowledge (and excitment) from the CS50 class, I decied to build a web app for myself to keep new words I found from daily reading or watching activities.
+Then, I tried to find some mobile apps for this purpose, yet almost the app I found is focus on flash card base, which means provide users new and random words to memorize. It's not really what I want for my personal pupose. And with the knowledge (and excitment) from the CS50 class, I decied to build a web app for myself to keep new words I found from daily reading or watching activities. 
 
-There are some fundatamental features for user:
+The goal of the app is to support the user save and memorize new words better and more conveniently. There are features for users as below:
 
-- Use API from Oxford dictonary for explanation.
-- There is a nice dashboard with random word, quote and Today I learned which is a sub reddit I really prefer.
-- The user can browse all the words to review.
-- The user can add personal notes for saved words to have better explanation.
-- The user can change password.
+- Lookup a word from Oxford dictionary then save it to their own database
+- Browse all the words to review (sorted by time added or alphabet order)
+- Search for a saved word
+- Add personal notes/images for saved words to have better memorization. (This technique is widely use to improve memory by visualizing things)
+- Change password.
+- There is a nice dashboard with random word, **quote** and **Today I learned** feed which are feteched from Reddit by using API.
 
-Some details about technical statck:
+I think that I achieved valuable knowledge by using various kinds of tools, libraries and services to build the project:
 
-- SQLAlchemy with Flask-Migrate.
-- Postgres for production and SQLite for testing purpose.
-- Deployed on Google Compute Engine, with gUnicorn as WSGI, and nginx as reserved proxy server
-- Tailwind CSS framework for user interface.
-- CI configuration with CircleCI, Travis and CodeCov
+- Flask with SQLAchmemy, Flask-Login and Flask-WTF
+- PostgreSQL for production database
+- SQLite for testing database
+- Tailwind CSS framework, PostCSS, jQuery. This is a subtle building process which automatically minify CSS files, build JS files from source then output to `dist` folder
+- Make it open source at [GitHub](https://github.com/infantiablue/voca)
+- Deployed with gunicorn as WSGI implementation, supervisor for process management and nginx as reversed proxy server
+- PyTest (with test coverage is more than 80% and I am still improving)
+- This is one of my exciting part of the development stage, I have succesfully configure the app for Continuous Integration with [CircleCI]([https](https://circleci.com)) and [TravisCI](https://www.travis-ci.com/)
 
-[Live site](https://voca.techika.com)
+In the end, I've figured out a good work flow to use a CI/CD service to build and deploy the project.
