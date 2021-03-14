@@ -247,8 +247,9 @@ def lookup(word):
         r = requests.get(url, headers={'app_id': app_id, 'app_key': app_key})
         if (r.status_code == 200):
             res = r.json()
-            with open(f'words/{word}.json', 'w') as outfile:
-                json.dump(res, outfile)
+            if not os.path.exists(f'words/{word}.json'):
+                with open(f'words/{word}.json', 'w+') as outfile:
+                    json.dump(res, outfile)
             w = []
             # Extracting crucial data from API result
             if 'results' in res:

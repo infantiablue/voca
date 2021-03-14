@@ -127,9 +127,7 @@ a#edit-word {
 }
 /* The alert message box */
 .alert {
-	padding: 10px;
-	background-color: white; /* Red */
-	margin-bottom: 10px;
+	@apply p-1 bg-white mt-3 mb-3;
 }
 
 /* The close button */
