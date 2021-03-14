@@ -16,6 +16,16 @@ def test_words_browse_with_pagination(client, auth):
     assert b'exacerbate' in response.data
 
 
+def test_words_browse_by_time(client, auth):
+    auth.login()
+    response = client.get('/words/browse?sort=time')
+    assert response.status_code == 200
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(response.data, "html.parser")
+    target = soup.find_all(class_="word")[0].get_text()
+    assert target.strip('\n') == 'king'
+
+
 def test_sense(client, auth):
     auth.login()
     response = client.get('/sense')
@@ -34,9 +44,11 @@ def test_sense(client, auth):
 def test_api_call_from_service(client, auth):
     auth.login()
     response = client.get('/api/lookup/apple')
+    response = client.get('/api/lookup/universal')
     assert response.status_code == 200
     # Test if cache worked
     assert os.path.exists(f'{os.getcwd()}/cache/apple.json')
+    assert os.path.exists(f'{os.getcwd()}/cache/universal.json')
 
 
 def test_api_call_false_from_service(client, auth):
@@ -55,7 +67,6 @@ def test_api_call_from_cache(client, auth):
 def test_add_word(app, client, auth):
     auth.login()
     response = client.get('/word/add')
-    assert response.status_code == 200
     with client:
         response = client.post(
             '/word/add', data={'word': 'apple'}, follow_redirects=True)
@@ -64,7 +75,7 @@ def test_add_word(app, client, auth):
         with app.app_context():
             word = current_user.words.filter_by(text='apple').first()
             assert word is not None
-    os.remove(f'{os.getcwd()}/cache/apple.json')
+        os.remove(f'{os.getcwd()}/cache/apple.json')
 
 
 def test_add_without_cache_word(app, client, auth):
@@ -100,7 +111,10 @@ def test_add_nomeaning_word(client, auth):
 
 def test_add_note(client, auth):
     auth.login()
-    response = client.get('/edit')
+    response = client.get('/edit', follow_redirects=True)
+    assert b'Dashboard' in response.data
+
+    response = client.get('/edit/asdasd')
     assert response.status_code == 404
 
     response = client.get('/edit/ace')
@@ -111,6 +125,11 @@ def test_add_note(client, auth):
     assert b'Updated note successfully.' in response.data
     response = client.get('/sense/ace')
     assert b'example' in response.data
+    client.post(
+        '/edit/ace', data={'note': 'updated example'})
+    # Update note
+    response = client.get('/sense/ace')
+    assert b'updated example' in response.data
 
 
 def test_remove_word(app, client, auth):

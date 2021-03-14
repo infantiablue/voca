@@ -91,12 +91,9 @@ def sense(word):
             note_text = note.text.replace(w.text, f'<u>{w.text}</u>')
         else:
             note_text = None
-        try:
-            with open(f'cache/{w.text}.json') as json_file:
-                data = json.load(json_file)
-        except FileNotFoundError:
-            flash("An error has been occured.", category="error")
-            return redirect('/dashboard')
+        # try:
+        with open(f'cache/{w.text}.json') as json_file:
+            data = json.load(json_file)
         return render_template('word/sense.html', data=data, word=word, note=note_text, media=media)
     else:
         abort(404)
@@ -158,60 +155,65 @@ def search():
     return render_template('word/search.html', form=form, result=result, flag=flag)
 
 
-@ bp.route('/edit/<word>', methods=['GET', 'POST'])
-@ login_required
-def edit(word):
+@bp.route('/edit/<word>', methods=['GET', 'POST'])
+@ bp.route('/edit')
+@login_required
+def edit(word=None):
     form = EditWordForm()
-    if (word):
+    print(word)
+    if word:
         w = current_user.words.filter_by(text=word).first()
-        note = Note.query.filter_by(
-            user_id=current_user.id, word_id=w.id).first()
-    if request.method == 'POST' and form.validate():
-        assets_dir = os.path.join(os.path.dirname(
-            current_app.instance_path), 'assets')
-        img = form.image.data
-        if img:
-            uuid_folder = uuid.uuid4().hex
-            if os.path.exists(os.path.join(assets_dir, uuid_folder)):
-                uuid_folder = uuid.uuid4().hex
-            filename = secure_filename(img.filename)
-            os.mkdir(os.path.join(assets_dir, uuid_folder))
-            img_path = os.path.join(assets_dir, uuid_folder, filename)
-            img.save(img_path)
-
-            from PIL import Image
-            fn, ext = os.path.splitext(img_path)
-            fn = fn.split('/')[-1]
-            image = Image.open(img_path)
-            image.thumbnail((400, 400))
-            image.save(os.path.join(
-                assets_dir, uuid_folder, f'{fn}.thumb{ext}'), quality=100)
-            img_url = f'{uuid_folder}/{fn}.thumb{ext}'
-            media = Media.query.filter_by(
-                user_id=current_user.id, word_id=current_user.words.filter_by(text=word).first().id).first()
-            if media:
-                media.url = img_url
-            else:
-                media = Media(url=img_url,
-                              kind='img', user_id=current_user.id, word_id=w.id)
-                db.session.add(media)
-            db.session.commit()
-            flash('Image uploaded successfully.', category='success')
-        if note:
-            note.text = form.note.data
-        else:
-            new_note = Note(text=form.note.data,
-                            user_id=current_user.id, word_id=w.id)
-            db.session.add(new_note)
-        db.session.commit()
-        flash('Updated note successfully.', category='success')
-        return redirect(f'/edit/{word}')
-    else:
-        if(note):
-            form.note.data = note.text
         if w:
-            return render_template('word/edit.html', form=form, word=word)
-    abort(404)
+            note = Note.query.filter_by(
+                user_id=current_user.id, word_id=w.id).first()
+            if request.method == 'POST' and form.validate():
+                assets_dir = os.path.join(os.path.dirname(
+                    current_app.instance_path), 'assets')
+                img = form.image.data
+                if img:
+                    uuid_folder = uuid.uuid4().hex
+                    if os.path.exists(os.path.join(assets_dir, uuid_folder)):
+                        uuid_folder = uuid.uuid4().hex
+                    filename = secure_filename(img.filename)
+                    os.mkdir(os.path.join(assets_dir, uuid_folder))
+                    img_path = os.path.join(assets_dir, uuid_folder, filename)
+                    img.save(img_path)
+
+                    from PIL import Image
+                    fn, ext = os.path.splitext(img_path)
+                    fn = fn.split('/')[-1]
+                    image = Image.open(img_path)
+                    image.thumbnail((400, 400))
+                    image.save(os.path.join(
+                        assets_dir, uuid_folder, f'{fn}.thumb{ext}'), quality=100)
+                    img_url = f'{uuid_folder}/{fn}.thumb{ext}'
+                    media = Media.query.filter_by(
+                        user_id=current_user.id, word_id=current_user.words.filter_by(text=word).first().id).first()
+                    if media:
+                        media.url = img_url
+                    else:
+                        media = Media(url=img_url,
+                                      kind='img', user_id=current_user.id, word_id=w.id)
+                        db.session.add(media)
+                    db.session.commit()
+                    flash('Image uploaded successfully.', category='success')
+                if note:
+                    note.text = form.note.data
+                else:
+                    new_note = Note(text=form.note.data,
+                                    user_id=current_user.id, word_id=w.id)
+                    db.session.add(new_note)
+                db.session.commit()
+                flash('Updated note successfully.', category='success')
+                return redirect(f'/edit/{word}')
+            else:
+                if(note):
+                    form.note.data = note.text
+                if w:
+                    return render_template('word/edit.html', form=form, word=word)
+        else:
+            abort(404)
+    return redirect('/dashboard')
 
 
 @bp.route('/word/remove', methods=['POST'])
