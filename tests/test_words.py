@@ -121,3 +121,17 @@ def test_remove_word(app, client, auth):
         with app.app_context():
             word = current_user.words.filter_by(text='ace').first()
             assert word is None
+
+
+def test_search_with_result(app, client, auth):
+    auth.login()
+    with client:
+        response = client.post('/search', data={'query': 'exa'})
+        assert b'exacerbate' in response.data
+
+
+def test_search_with_no_result(app, client, auth):
+    auth.login()
+    with client:
+        response = client.post('/search', data={'query': 'retu'})
+        assert b'There is no result found.' in response.data

@@ -40,13 +40,13 @@ let preview = (word) => {
 					r_count++;
 				}
 			} else {
-				$("#modal-content").append(`<h2 class="text-lg mt-2 font-semibold text-red-900">No entry found matching supplied </h2>`);
+				$("#modal-content").append(`<h2 class="text-lg mt-2 font-semibold text-red-900">No entry found matching supplied.</h2>`);
 				$("#modal-header").hide();
 			}
 		})
 		.fail(() => {
 			$("#loading").hide();
-			$("#modal-content").append(`<h2 class="text-lg mt-2 font-semibold text-red-900">No entry found matching supplied </h2>`);
+			$("#modal-content").append(`<h2 class="text-lg mt-2 font-semibold text-red-900">No entry found matching supplied.</h2>`);
 			$("#modal-header").hide();
 		});
 };
