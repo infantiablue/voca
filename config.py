@@ -8,6 +8,7 @@ class Config(object):
     WTF_CSRF_ENABLED = True
     SECRET_KEY = os.environ.get('SECRET')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')
+    # SQLALCHEMY_DATABASE_URI = 'sqlite:///../tests/database/voca.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     MAX_CONTENT_LENGTH = 2 * 1024 * 1024
     WORDS_PER_PAGE = 30

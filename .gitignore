@@ -131,6 +131,7 @@ dmypy.json
 #venv
 .env/
 .envrc
+.DS_Store
 
 # Front End
 .webassets-cache
