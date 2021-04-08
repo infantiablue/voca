@@ -81,7 +81,7 @@
 			</div>
 		</nav>
 		<div id="main" class="container mx-auto mt-20 pb-8">
-			<div class="rounded-md border-solid border-gray-100 h-screen max-h-full pt-2 pb-4 overflow-y-auto mt-10" style="background-color: #28587b">
+			<div class="rounded-md border-solid border-gray-100 h-screen max-h-full pt-2 pb-4 overflow-y-auto overflow-visible mt-10" style="background-color: #28587b">
 				<div class="container w-2/3 mx-auto text-center rounded-sm">
 					{% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
 					<div class="alert">

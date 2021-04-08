@@ -14,8 +14,7 @@
 
 ## Description
 
-As a non-English speaker, I need to learn new vocabulary consecutively. Before CS50, I usually use Apple Notes to save and review new words. However, it's not really an intuitive way to build vocabulary base.
-Then, I tried to find some mobile apps for this purpose, yet almost the app I found is focus on flash card base, which means provide users new and random words to memorize. It's not really what I want for my personal pupose. And with the knowledge (and excitment) from the CS50 class, I decied to build a web app for myself to keep new words I found from daily reading or watching activities. 
+As a non-English speaker, I need to learn new vocabulary consecutively. Before CS50, I usually use Apple Notes to save and review new words. However, it's not really an intuitive way to build a vocabulary base. Then, I tried to find some mobile apps for this purpose, yet almost all the app I found is focused on a flashcard base, which means provide users new and random words to memorize. It's not really what I want for my personal purpose. And with the knowledge (and excitement) from the CS50 class, I decided to build a web app for myself to keep new words I found from daily reading or watching activities.
 
 The goal of the app is to support the user save and memorize new words better and more conveniently. There are features for users as below:
 

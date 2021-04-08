@@ -1,6 +1,7 @@
 import json
 from flask import Blueprint, render_template, request, flash, redirect
 from flask_login import login_required, current_user
+from sqlalchemy import desc
 from sqlalchemy.sql.expression import func
 from .models import db, User
 from wtforms import Form, PasswordField, validators
@@ -24,7 +25,8 @@ class AccountForm(Form):
 def dashboard():
     addword_form = AddWordForm()
     search_form = SearchForm()
-    words = current_user.words.limit(10).all()
+    words = current_user.words.order_by(
+        desc('timestamp')).limit(10)
     total_words = current_user.words.count()
     random_word = {}
     temp = current_user.words.filter_by().order_by(

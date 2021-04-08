@@ -39,7 +39,6 @@ class EditWordForm(FlaskForm):
 @login_required
 def browse(page=1):
     sort = request.args.get('sort')
-    print(sort)
     # Pagination
     words = ""
     if sort == 'time':
@@ -53,13 +52,15 @@ def browse(page=1):
     prev_url = url_for('word.browse', page=words.prev_num, sort=sort) \
         if words.has_prev else None
     total_words = current_user.words.count()
-    base_num = int(total_words/3)
-    remainder = total_words % 3
-    # TODO: if 30 items?
-    col1_n = col2_n = col3_n = base_num
+    # identify the average number of items per column
+    base_num_per_col = int(words.per_page/3)
+    # get the remainder to distribute items to each column
+    remainder = words.per_page % 3
+    # set the base number of items per column
+    col1_n = col2_n = col3_n = base_num_per_col
     if remainder == 1:
         col1_n += 1
-    if remainder == 2:
+    elif remainder == 2:
         col1_n += 1
         col2_n += 1
     col1 = []
@@ -68,9 +69,9 @@ def browse(page=1):
     for idx, val in enumerate(words.items):
         if idx < col1_n:
             col1.append(val)
-        if idx < col1_n + col2_n and idx >= col1_n:
+        if idx < (col1_n + col2_n) and idx >= col1_n:
             col2.append(val)
-        if idx < col1_n + col2_n + col3_n and idx >= col1_n + col2_n:
+        if idx < (col1_n + col2_n + col3_n) and idx >= (col1_n + col2_n):
             col3.append(val)
     cols = [col1, col2, col3]
 
