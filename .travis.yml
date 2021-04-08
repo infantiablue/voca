@@ -10,7 +10,7 @@ before_script:
   - "export FLASK_APP=app"
   - "export FLASK_ENV=production"
   - "export NODE_ENV=production"
-  - "export SECRET=DQ8RwPU2NIv1st0F"
+  - "export SECRET=wPU2NIv1stDQ8R0F"
   - "export APP_SETTINGS=config.TestingConfig"
   - "export OXFORD_APP_ID=fd0f1799"
   - "export OXFORD_APP_KEY=b07f95f839de63b54d400c2f023658d3"

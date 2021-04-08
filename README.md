@@ -1,6 +1,6 @@
 # Vocabulary Keeper
 
-## Development Status
+## Build Status
 
 [![CircleCI](https://circleci.com/gh/infantiablue/voca.svg?style=svg)](https://circleci.com/gh/infantiablue/voca) [![Build Status](https://travis-ci.com/infantiablue/voca.svg?branch=main)](https://travis-ci.com/infantiablue/voca) [![codecov.io](https://codecov.io/github/infantiablue/voca/coverage.svg?branch=main)](https://codecov.io/github/infantiablue/voca?branch=main) 
 
@@ -34,6 +34,6 @@ I think that I achieved valuable knowledge by using various kinds of tools, libr
 - Make it open source at [GitHub](https://github.com/infantiablue/voca)
 - Deployed with gunicorn as WSGI implementation, supervisor for process management and nginx as reversed proxy server
 - PyTest (with test coverage is more than 80% and I am still improving)
-- This is one of my exciting part of the development stage, I have succesfully configure the app for Continuous Integration with [CircleCI]([https](https://circleci.com)) and [TravisCI](https://www.travis-ci.com/)
+- This is one of my exciting part of the development stage, I have succesfully configure the app for Continuous Integration with [CircleCI](https://circleci.com) and [TravisCI](https://www.travis-ci.com/)
 
 In the end, I've figured out a good work flow to use a CI/CD service to build and deploy the project.

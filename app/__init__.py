@@ -51,7 +51,8 @@ def create_app():
     auth.login_manager.init_app(app)
     auth.login_manager.login_view = 'auth.login'
 
-    # Set up PostCSS for Tailwind
+    # Set up to run PostCSS for Tailwind using Flask_Assests library
+    # Need to install PostCSS globally
     assets = Environment()
     assets.init_app(app)
 
@@ -62,7 +63,6 @@ def create_app():
     assets.register('css', css)
 
     @app.route('/')
-    # @login_required
     def index():
         return redirect('/dashboard')
 
