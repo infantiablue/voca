@@ -32,10 +32,8 @@ def test_change_password_with_invalidate_input(client, auth, current_password, n
 
 @pytest.mark.parametrize(('current_password', 'new_password', 'confirmation', 'message'), (
     ('1234', 'abcd', 'abcd', b'Changed password successfully.'),
-    # ('abcd', '1234', '1234', b'Changed password successfully.'),
 ))
 def test_change_password_with_validate_input(client, auth, current_password, new_password, confirmation, message):
-    # print(current_password)
     auth.login(password=current_password)
     with client:
         response = client.post(

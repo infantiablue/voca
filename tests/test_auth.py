@@ -29,8 +29,6 @@ def test_register(app, client, auth):
 
 
 @pytest.mark.parametrize(('username', 'email', 'password', 'confirmation', 'message'), (
-    # ('', '', b'Username is required.'),
-    # ('a', '', b'This email address has been registed.'),
     ('a', 'truong.phan@outlook.com', 'b', 'b',
      b'Field must be between 4 and 25 characters long.'),
     ('truongphan', 'a@a', 'b', 'b',
